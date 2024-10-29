@@ -30,7 +30,7 @@ function GetGameData()
     return 'Unsupported Game'
 end
 
-Dankware.Utilities.UI = LoadScript('Utilities/UI.lua')
+-- Dankware.Utilities.UI = LoadScript('Utilities/UI.lua')
 Dankware.Game = GetGameData()
 
 print(Dankware.Game.Name)
