@@ -1,4 +1,14 @@
-print('called')
+local Dankware = getgenv().Dankware
+
+Dankware = {
+    Source = 'raw.githubusercontent.com/bytepseudo/Dankware/',
+
+    Games = {
+        ['3039388345'] = {Name = 'Shinjuku, 2006', Path = 'Games/Shinjuku6'},
+        ['4483381582'] = {Name = 'Shinjuku, 1988', Path = 'Games/Shinjuku8'},
+        ['4483381587'] = {Name = 'Baseplate', Path = 'Games/Baseplate'}
+    }
+}
 
 function GetFile(File)
     return game:HttpGet(`{Dankware.Source}{File}`)
@@ -17,18 +27,6 @@ function GetGameData()
 
     return 'Unsupported Game'
 end
-
-local Dankware = getgenv().Dankware
-
-Dankware = {
-    Source = 'raw.githubusercontent.com/bytepseudo/Dankware/',
-
-    Games = {
-        ['3039388345'] = {Name = 'Shinjuku, 2006', Path = 'Games/Shinjuku6'},
-        ['4483381582'] = {Name = 'Shinjuku, 1988', Path = 'Games/Shinjuku8'},
-        ['4483381587'] = {Name = 'Baseplate', Path = 'Games/Baseplate'}
-    }
-}
 
 Dankware.Utilities.UI = LoadScript('Utilities/UI.lua')
 Dankware.Game = GetGameData()
