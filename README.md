@@ -1,1 +1,1 @@
-Loader and Util functionality taken from [Parvus](https://github.com/AlexR32/Parvus/)
+Loader and Util functionality taken/inspired from [Parvus](https://github.com/AlexR32/Parvus/)
