@@ -1,3 +1,5 @@
+print('called')
+
 function GetFile(File)
     return game:HttpGet(`{Dankware.Source}{File}`)
 end
