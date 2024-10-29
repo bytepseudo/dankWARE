@@ -1,3 +1,5 @@
+print('called')
+
 local Dankware = getgenv().Dankware
 
 Dankware = {
