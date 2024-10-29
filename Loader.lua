@@ -17,7 +17,7 @@ function GetGameData()
 end
 
 getgenv().Dankware = {
-    Source = 'https://github.com/bytepseudo/Dankware',
+    Source = 'raw.githubusercontent.com/bytepseudo/Dankware',
 
     Games = {
         ['3039388345'] = {Name = 'Shinjuku, 2006', Path = 'Games/Shinjuku6'},
