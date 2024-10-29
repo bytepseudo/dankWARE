@@ -18,7 +18,9 @@ function GetGameData()
     return 'Unsupported Game'
 end
 
-getgenv().Dankware = {
+local Dankware = getgenv().Dankware
+
+Dankware = {
     Source = 'raw.githubusercontent.com/bytepseudo/Dankware/',
 
     Games = {
