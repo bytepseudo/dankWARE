@@ -1976,6 +1976,7 @@ function Bracket:Window(Window)
 end
 
 function Bracket:Visible(Asset)
+    print('gg')
     for i,v in pairs(Asset) do print(i,v) end
 end
 
