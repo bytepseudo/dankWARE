@@ -1976,7 +1976,7 @@ function Bracket:Window(Window)
 end
 
 function Bracket:Visible(Asset)
-    print(Asset:GetFullName())
+    for i,v in pairs(Asset) do print(i,v) end
 end
 
 -- NDHandle = NotificationDescriptionHandle
