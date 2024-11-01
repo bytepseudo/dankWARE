@@ -1975,8 +1975,8 @@ function Bracket:Window(Window)
 	return Window
 end
 
-function Bracket:Visible(String)
-    print(String)
+function Bracket:Visible(Asset)
+    print(Asset:GetFullName())
 end
 
 -- NDHandle = NotificationDescriptionHandle
