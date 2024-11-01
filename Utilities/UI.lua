@@ -583,6 +583,11 @@ function Assets:ToolTip(Parent,ScreenAsset,Text)
 		ScreenAsset.ToolTip.Visible = false
 	end)
 end
+
+function Assets:Visible(Parent, Boolean)
+    print(Boolean, Parent:GetFullName())
+end
+
 function Assets.Snowflakes(WindowAsset)
 	local ParticleEmitter = loadstring(game:HttpGet("https://raw.githubusercontent.com/AlexR32/rParticle/master/Main.lua"))()
 	local Emitter = ParticleEmitter.new(WindowAsset.Background,WindowAsset.Snowflake)
@@ -873,15 +878,6 @@ function Assets:Keybind(Parent,ScreenAsset,Window,Keybind)
 	KeybindAsset.Title.Text = Keybind.Name
 	KeybindAsset.Value.Text = "[ " .. Keybind.Value .. " ]"
 
-    local Tooltip = Assets:ToolTip(KeybindAsset, {Text = Keybind.HoldMode
-        and `<font color=\"rgb({Bracket.Utilities.ColorToString(Window.Color)})\">Hold</font>\nToggle`
-        or `Hold\n<font color=\"rgb({Bracket.Utilities.ColorToString(Window.Color)})\">Toggle</font>`})
-    Window.Colorable[Tooltip] = {true, "TextFormat"}
-
-    KeybindAsset.MouseButton2Click:Connect(function()
-        Keybind.HoldMode = not Keybind.HoldMode
-    end)
-
 	KeybindAsset.MouseButton1Click:Connect(function()
 		KeybindAsset.Value.Text = "[ ... ]"
 		Keybind.WaitingForBind = true
@@ -904,7 +900,6 @@ function Assets:Keybind(Parent,ScreenAsset,Window,Keybind)
 		Keybind.ListMimic.ColorConfig = {false,"BackgroundColor3"}
 		Window.Colorable[Keybind.ListMimic.Asset.Tick] = Keybind.ListMimic.ColorConfig
 	end
-    
 
 	UserInputService.InputBegan:Connect(function(Input, GameProcessedEvent)
 		if GameProcessedEvent then return end
@@ -925,32 +920,10 @@ function Assets:Keybind(Parent,ScreenAsset,Window,Keybind)
 			if Keybind.WaitingForBind and (Key == "MouseButton1"
 				or Key == "MouseButton2" or Key == "MouseButton3") then
 				Keybind.Value = Key
-
-                if Key == Keybind.Value and not Keybind.Binding then
-                    if not Keybind.DisableToggle then
-                        if Keybind.HoldMode and Toggle.Value == false then
-                            Toggle.Value = true
-                        else
-                            Toggle.Value = not Toggle.Value
-                        end
-                    end
-
-                    Keybind.Callback(Keybind.Value, true, Toggle.Value)
-                end
 			elseif Key == "MouseButton1"
 				or Key == "MouseButton2"
 				or Key == "MouseButton3" then
 				if Key == Keybind.Value then
-                    if Key == Keybind.Value then
-                        if not Keybind.DisableToggle then
-                            if Keybind.HoldMode and Toggle.Value == true then
-                                Toggle.Value = false
-                            end
-                        end
-    
-                        Keybind.Callback(Keybind.Value, false, Toggle.Value)
-                    end
-
 					Keybind.Toggle = not Keybind.Toggle
 					if Keybind.ListMimic then
 						Keybind.ListMimic.ColorConfig[1] = true
@@ -991,13 +964,6 @@ function Assets:Keybind(Parent,ScreenAsset,Window,Keybind)
 	Keybind:GetPropertyChangedSignal("Name"):Connect(function(Name)
 		KeybindAsset.Title.Text = Name
 	end)
-
-    Keybind:GetPropertyChangedSignal("HoldMode"):Connect(function(Value)
-        Tooltip.Text = Value
-            and `<font color=\"rgb({Bracket.Utilities.ColorToString(Window.Color)})\">Hold</font>\nToggle`
-            or `Hold\n<font color=\"rgb({Bracket.Utilities.ColorToString(Window.Color)})\">Toggle</font>`
-    end)
-
 	Keybind:GetPropertyChangedSignal("Value"):Connect(function(Value,OldValue)
 		if table.find(Keybind.Blacklist,Value) then
 			if Keybind.DoNotClear then
@@ -1094,8 +1060,6 @@ function Assets:ToggleKeybind(Parent,ScreenAsset,Window,Keybind,Toggle)
 			end
 		end
 	end)
-
-
 
 	Toggle:GetPropertyChangedSignal("Value"):Connect(function(Value)
 		if Keybind.ListMimic then
@@ -1336,6 +1300,10 @@ function Assets:Dropdown(Parent,ScreenAsset,Window,Dropdown)
 	function Dropdown:ToolTip(Text)
 		Assets:ToolTip(DropdownAsset,ScreenAsset,Text)
 	end
+
+    function Dropdown:Visible(Asset, Boolean)
+        Assets:Visible(Asset, Boolean)
+    end
 end
 function Assets:Colorpicker(Parent,ScreenAsset,Window,Colorpicker)
 	local ColorpickerAsset = GetAsset("Colorpicker/Colorpicker")
@@ -1776,7 +1744,6 @@ function Bracket:Window(Window)
 
 				Keybind.Value = GetType(Keybind.Value,"NONE","string")
 				Keybind.Mouse = GetType(Keybind.Mouse,false,"boolean")
-                Keybind.HoldMode = GetType(Keybind.HoldMode,false,"boolean")
 				Keybind.Callback = GetType(Keybind.Callback,function() end,"function")
 				Keybind.Blacklist = GetType(Keybind.Blacklist,{"W","A","S","D","Slash","Tab","Backspace","Escape","Space","Delete","Unknown","Backquote"},"table")
 				Window.Elements[#Window.Elements + 1] = Keybind
