@@ -571,6 +571,7 @@ function Assets:Section(Parent,Section)
 
 	return SectionAsset.Container
 end
+
 function Assets:ToolTip(Parent,ScreenAsset,Text)
 	Parent.MouseEnter:Connect(function()
 		ScreenAsset.ToolTip.Text = Text
@@ -582,10 +583,6 @@ function Assets:ToolTip(Parent,ScreenAsset,Text)
 	Parent.MouseLeave:Connect(function()
 		ScreenAsset.ToolTip.Visible = false
 	end)
-end
-
-function Assets:Visible(Parent,ScreenAsset,Window,Toggle)
-    print(Parent,ScreenAsset,Window,Toggle)
 end
 
 function Assets.Snowflakes(WindowAsset)
@@ -1976,6 +1973,10 @@ function Bracket:Window(Window)
 		return Tab
 	end
 	return Window
+end
+
+function Bracket:Visible(String)
+    print(String)
 end
 
 -- NDHandle = NotificationDescriptionHandle
