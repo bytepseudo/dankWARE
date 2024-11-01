@@ -584,8 +584,8 @@ function Assets:ToolTip(Parent,ScreenAsset,Text)
 	end)
 end
 
-function Assets:Visible(Parent, Boolean)
-    print(Boolean, Parent:GetFullName())
+function Assets:Visible(Parent,ScreenAsset,Window,Toggle)
+    print(Parent,ScreenAsset,Window,Toggle)
 end
 
 function Assets.Snowflakes(WindowAsset)
@@ -717,6 +717,10 @@ function Assets:Toggle(Parent,ScreenAsset,Window,Toggle)
 
 	function Toggle:ToolTip(Text)
 		Assets:ToolTip(ToggleAsset,ScreenAsset,Text)
+	end
+
+    function Toggle:Visible(Parent,ScreenAsset,Window,Toggle)
+		Assets:Visible(Parent,ScreenAsset,Window,Toggle)
 	end
 
 	return ToggleAsset
@@ -1300,10 +1304,6 @@ function Assets:Dropdown(Parent,ScreenAsset,Window,Dropdown)
 	function Dropdown:ToolTip(Text)
 		Assets:ToolTip(DropdownAsset,ScreenAsset,Text)
 	end
-
-    function Dropdown:Visible(Asset, Boolean)
-        Assets:Visible(Asset, Boolean)
-    end
 end
 function Assets:Colorpicker(Parent,ScreenAsset,Window,Colorpicker)
 	local ColorpickerAsset = GetAsset("Colorpicker/Colorpicker")
