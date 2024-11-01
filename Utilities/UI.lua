@@ -1977,7 +1977,7 @@ end
 
 function Bracket:Visible(Asset)
     print('gg')
-    for i,v in pairs(Asset) do print(i,v) end
+    for i,v in pairs(Asset.Internal) do print(i,v) end
 end
 
 -- NDHandle = NotificationDescriptionHandle
