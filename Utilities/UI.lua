@@ -873,7 +873,7 @@ function Assets:Keybind(Parent,ScreenAsset,Window,Keybind)
 	KeybindAsset.Title.Text = Keybind.Name
 	KeybindAsset.Value.Text = "[ " .. Keybind.Value .. " ]"
 
-    local Tooltip = Bracket.Elements.Tooltip(KeybindAsset, {Text = Keybind.HoldMode
+    local Tooltip = Assets:ToolTip(KeybindAsset, {Text = Keybind.HoldMode
         and `<font color=\"rgb({Bracket.Utilities.ColorToString(Window.Color)})\">Hold</font>\nToggle`
         or `Hold\n<font color=\"rgb({Bracket.Utilities.ColorToString(Window.Color)})\">Toggle</font>`})
     Window.Colorable[Tooltip] = {true, "TextFormat"}
@@ -997,7 +997,7 @@ function Assets:Keybind(Parent,ScreenAsset,Window,Keybind)
             and `<font color=\"rgb({Bracket.Utilities.ColorToString(Window.Color)})\">Hold</font>\nToggle`
             or `Hold\n<font color=\"rgb({Bracket.Utilities.ColorToString(Window.Color)})\">Toggle</font>`
     end)
-    
+
 	Keybind:GetPropertyChangedSignal("Value"):Connect(function(Value,OldValue)
 		if table.find(Keybind.Blacklist,Value) then
 			if Keybind.DoNotClear then
