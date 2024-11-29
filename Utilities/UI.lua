@@ -2531,6 +2531,12 @@ Bracket.Elements = {
 				Bracket.Screen.Watermark.TextBounds.Y + 6
 			)
 
+			Bracket.Utilities.GetTextBounds(
+	                    Bracket.Screen.Watermark.Text,
+	                    Bracket.Screen.Watermark.Font.Name,
+	                    Vector2.new(Bracket.Screen.Watermark.AbsoluteSize.X, Bracket.Screen.Watermark.TextSize)
+	                ).Y + 6
+
 			Bracket.Utilities.MakeDraggable(Bracket.Screen.Watermark, Bracket.Screen.Watermark, function(Position)
 				if not Window.Enabled then return end
 				Bracket.Screen.Watermark.Position = Position
