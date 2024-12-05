@@ -32,8 +32,6 @@ function Drawings.AddObject(Instance, Options)
         OutlineColor = Options.OutlineColor
     })
 
-    Text.Visible = true
-
     Object.Connection = RunService.RenderStepped:Connect(function()
         if not Instance then
             Object.Connection:Disconnect()
