@@ -33,6 +33,8 @@ function Drawings:AddObject(Instance, Options)
         OutlineColor = Options.OutlineColor
     })
 
+    print('balls')
+
     Object.Connection = RunService.RenderStepped:Connect(function()
         if not Instance then
             Object.Connection:Disconnect()
