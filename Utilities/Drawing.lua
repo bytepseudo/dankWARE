@@ -7,7 +7,7 @@ local Drawings = {
     Objects = {}
 }
 
-function Drawings.AddDrawing(Type, Properties)
+function Drawings:AddDrawing(Type, Properties)
     local DrawingObject = Drawing.new(Type)
 
     for Property, Value in pairs(Properties) do
@@ -17,14 +17,14 @@ function Drawings.AddDrawing(Type, Properties)
     return DrawingObject
 end
 
-function Drawings.AddObject(Instance, Options)
-    if Drawings.Objects[Instance] then return end
+function Drawings:AddObject(Instance, Options)
+    if self.Objects[Instance] then return end
 
-    local Object = Drawings.Objects[Instance] = {}
+    local Object = self.Objects[Instance] = {}
 
     Object.Connection = nil
 
-    local Text = AddDrawing('Text', {
+    local Text = self:AddDrawing('Text', {
         Text = Options.Text,
         Visible = Options.Visible,
         Center = Options.Center,
