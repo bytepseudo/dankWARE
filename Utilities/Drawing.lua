@@ -7,7 +7,7 @@ local Drawings = {
     Objects = {}
 }
 
-function AddDrawing(Type, Properties)
+function Drawings.AddDrawing(Type, Properties)
     local DrawingObject = Drawing.new(Type)
 
     for Property, Value in pairs(Properties) do
