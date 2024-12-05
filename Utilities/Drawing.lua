@@ -1,3 +1,5 @@
+print('gg')
+
 local Players = game:GetService('Players')
 local RunService = game:GetService('RunService')
 
@@ -32,8 +34,6 @@ function Drawings:AddObject(Instance, Options)
         Color = Options.Color,
         OutlineColor = Options.OutlineColor
     })
-
-    print('balls')
 
     Object.Connection = RunService.RenderStepped:Connect(function()
         if not Instance then
