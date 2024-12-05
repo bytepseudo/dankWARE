@@ -25,7 +25,8 @@ function Drawings.AddObject(Instance, Options)
     Object.Connection = nil
 
     local Text = AddDrawing('Text', {
-        Text = Options.Text
+        Text = Options.Text,
+        Visible = Options.Visible,
         Center = Options.Center,
         Outline = Options.Outline,
         Color = Options.Color,
