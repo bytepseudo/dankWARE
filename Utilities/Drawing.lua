@@ -7,7 +7,7 @@ local Drawings = {
     Objects = {}
 }
 
-function Drawings:AddDrawing(Type, Properties)
+Drawings.AddDrawing = function(Type, Properties)
     local DrawingObject = Drawing.new(Type)
 
     for Property, Value in pairs(Properties) do
@@ -17,7 +17,7 @@ function Drawings:AddDrawing(Type, Properties)
     return DrawingObject
 end
 
-function Drawings:AddObject(Instance, Options)
+Drawings.AddObject = function(Instance, Options)
     if self.Objects[Instance] then return end
 
     local Object = self.Objects[Instance] = {}
