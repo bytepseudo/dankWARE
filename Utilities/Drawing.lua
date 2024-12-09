@@ -17,7 +17,7 @@ Drawings.AddDrawing = function(Type, Properties)
     return DrawingObject
 end
 
-Drawings.AddObject = function(Instance, Options)
+Drawings.AddObject = function(self, Instance, Options)
     if self.Objects[Instance] then return end
 
     local Object = self.Objects[Instance] = {}
@@ -49,5 +49,6 @@ Drawings.AddObject = function(Instance, Options)
         end
     end)
 end
+
 
 return Drawings
