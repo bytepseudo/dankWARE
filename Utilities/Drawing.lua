@@ -30,6 +30,7 @@ function Drawings:AddObject(Instance, Options)
     local Text = self:AddDrawing('Text', Options)
     
     Object.Text = Text
+    Object.Enabled = Options.Visible
 
     Object.Connection = RunService.RenderStepped:Connect(function()
         if not Instance.Parent then
@@ -40,8 +41,8 @@ function Drawings:AddObject(Instance, Options)
         end
 
         local ScreenPosition, OnScreen = Camera:WorldToViewportPoint(Instance.Position)
-        
-        if OnScreen then
+
+        if Object.Enabled then
             Text.Visible = true
             Text.Position = Vector2.new(ScreenPosition.X, ScreenPosition.Y)
         else
