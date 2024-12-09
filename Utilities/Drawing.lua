@@ -50,7 +50,7 @@ function Drawings:AddObject(Instance, Options)
         end
     end)
 
-    return Text
+    return Object
 end
 
 function Drawings:RemoveObject(Instance)
