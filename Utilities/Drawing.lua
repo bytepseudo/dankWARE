@@ -48,6 +48,8 @@ function Drawings:AddObject(Instance, Options)
             Text.Visible = false
         end
     end)
+
+    return Text
 end
 
 function Drawings:RemoveObject(Instance)
