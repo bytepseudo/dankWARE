@@ -1,9 +1,7 @@
-print('called')
-
 local Dankware = getgenv().Dankware
 
 Dankware = {
-    Source = 'raw.githubusercontent.com/bytepseudo/Dankware/',
+    Source = 'raw.githubusercontent.com/bytepseudo/dankWARE/main',
 
     Games = {
         ['3039388345'] = {Name = 'Shinjuku, 2006', Path = 'Games/Shinjuku6'},
@@ -31,6 +29,5 @@ function GetGameData()
 end
 
 Dankware.Game = GetGameData()
-Dankware.Utilities.UI = LoadScript('Utilities/UI.lua')
 
 print(Dankware.Game.Name)
