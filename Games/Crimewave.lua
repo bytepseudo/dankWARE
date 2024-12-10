@@ -19,29 +19,18 @@ local TargetPlayer, TargetLimb = nil, nil
 local HitSound = Instance.new('Sound', Camera)
 HitSound.Volume = 3.3
 
--- local FovCircle = Drawing.new('Circle')
+local FovCircle = Drawing.new('Circle')
 local CombatInfo = Drawing.new('Text')
 
-print('gg1')
+local FovCircle = dankWARE.Utilities.Drawing:AddDrawing('Circle')
 
-local FovCircle = dankWARE.Utilities.Drawing:AddDrawing('Circle', {
-    Position = Vector2.new(960, 960),
-    Center = true,
-    Outline = true,
-    Color = Color3.new(1, 1, 1),
-    OutlineColor = Color3.new(0, 0, 0),
-    Text = 'Enabled: false, Target: None'
-})
-
-print('gg')
-
--- CombatInfo.Visible = true
--- CombatInfo.Position = Vector2.new(960, 960)
--- CombatInfo.Center = true
--- CombatInfo.Outline = true
--- CombatInfo.Color = Color3.new(1, 1, 1)
--- CombatInfo.OutlineColor = Color3.new(0, 0, 0)
--- CombatInfo.Text = 'Enabled: false, Target: None'
+CombatInfo.Visible = true
+CombatInfo.Position = Vector2.new(960, 960)
+CombatInfo.Center = true
+CombatInfo.Outline = true
+CombatInfo.Color = Color3.new(1, 1, 1)
+CombatInfo.OutlineColor = Color3.new(0, 0, 0)
+CombatInfo.Text = 'Enabled: false, Target: None'
 
 local RaycastParams = RaycastParams.new()
 RaycastParams.FilterDescendantsInstances = {LocalPlayer.Character}
