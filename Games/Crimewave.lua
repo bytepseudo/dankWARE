@@ -22,7 +22,7 @@ HitSound.Volume = 3.3
 local FovCircle = Drawing.new('Circle')
 local CombatInfo = Drawing.new('Text')
 
-local FovCircle = dankWARE.Utilities.Drawing:AddDrawing('Circle')
+-- local FovCircle = dankWARE.Utilities.Drawing:AddDrawing('Circle')
 
 CombatInfo.Visible = true
 CombatInfo.Position = Vector2.new(960, 960)
