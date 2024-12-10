@@ -167,6 +167,8 @@ function FilterCheck(Player)
 
     local IsValid = true
 
+    if not TargetLimb then return false end
+
     if VisibleCheck then
         local Visible = IsVisible(TargetLimb.Position)
 
@@ -300,3 +302,6 @@ local OldIndex; OldIndex = hookmetamethod(game, '__index', function(Self, Index)
 
     return OldIndex(Self, Index)
 end)
+
+local EndTime = math.floor((tick() - dankWARE.StartTime) * 10) / 10
+dankWARE.Utilities.Interface:Toast({Title = `Loaded in {EndTime} seconds`, Duration = 1.5, Color = Color3.new(0.0902, 0.65098, 0.92941, 0)})
