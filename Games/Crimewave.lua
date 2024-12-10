@@ -244,24 +244,28 @@ local OldNameCall; OldNameCall = hookmetamethod(game, '__namecall', function(Sel
 
     if Self.Name == 'NetworkEvent' then
         if Args[4] and Args[4][1] then
-            local Part = Args[4][1]
-            local Player = Players:GetPlayerFromCharacter(Part.Parent:IsA('Accessory') and Part.Parent.Parent or Part.Parent)
+            task.spawn(function()
+                setthreadidentity(5)
 
-            if Player then
-                local Start, End = tick()
-
-                local Humanoid = Player.Character.Humanoid
-                local OldHealth = Humanoid.Health
-
-                Humanoid.HealthChanged:Wait()
-
-                End = tick() - Start
-
-                if End < 0.2 then
-                    local Damage = math.floor((OldHealth - Humanoid.Health) * 10) / 10
-                    dankWARE.Utilities.Interface:Notify(`dankWARE | Hit {Player.Name} in the {Args[2].Name} for {Damage}`, 1.5)
+                local Part = Args[4][1]
+                local Player = Players:GetPlayerFromCharacter(Part.Parent:IsA('Accessory') and Part.Parent.Parent or Part.Parent)
+    
+                if Player then
+                    local Start, End = tick()
+    
+                    local Humanoid = Player.Character.Humanoid
+                    local OldHealth = Humanoid.Health
+    
+                    Humanoid.HealthChanged:Wait()
+    
+                    End = tick() - Start
+    
+                    if End < 0.2 then
+                        local Damage = math.floor((OldHealth - Humanoid.Health) * 10) / 10
+                        dankWARE.Utilities.Interface:Notify(`dankWARE | Hit {Player.Name} in the {Args[2].Name} for {Damage}`, 1.5)
+                    end
                 end
-            end
+            end)
         end
     end
 
