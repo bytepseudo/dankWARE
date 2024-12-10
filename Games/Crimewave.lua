@@ -1,3 +1,5 @@
+loadstring(game:HttpGet('https://raw.githubusercontent.com/Pixeluted/adoniscries/refs/heads/main/Source.lua'))()
+
 local Players = game:GetService('Players')
 local ReplicatedStorage = game:GetService('ReplicatedStorage')
 local UserInputService = game:GetService('UserInputService')
@@ -69,7 +71,7 @@ local Window = dankWARE.Utilities.Interface:Window({Name = 'dankWARE', Enabled =
             FilterSection:Slider({Name = 'Distance', Flag = 'Combat/Filter/Distance', Min = 1, Max = 1000, Value = 250, Precise = 1, Unit = ''})
 
             local DropdownLimbs = {}
-            
+
             for _, Limb in pairs(Limbs) do
                 if Limb == 'Head' then
                     table.insert(DropdownLimbs, {Name = Limb, Mode = 'Button', Value = true})
