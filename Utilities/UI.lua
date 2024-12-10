@@ -3759,43 +3759,53 @@ Bracket.Elements = {
 		end
 		function Dropdown.RefreshToPlayers(Self, ToggleMode)
 		    local DropdownPlayers = {}
-
+		
 		    for _, Player in pairs(PlayerService:GetPlayers()) do
-		        if Player ~= LocalPlayer then
-		            DropdownPlayers[Player.Name] = {
-		                Name = Player.Name,
-		                Mode = "Toggle",
-		                Value = false
-		            }
-		        end
+			if Player ~= LocalPlayer then
+			    DropdownPlayers[Player.Name] = {
+				Name = Player.Name,
+				Mode = "Toggle",
+				Value = false
+			    }
+			end
 		    end
 
 		    local function RefreshDropdown()
-		        local PlayersArray = {}
-		        for _, PlayerData in pairs(DropdownPlayers) do
-		            table.insert(PlayersArray, PlayerData)
-		        end
-		        Self:Clear()
-		        Self:BulkAdd(PlayersArray)
+			local PlayersArray = {}
+
+			for _, PlayerData in pairs(DropdownPlayers) do
+			    table.insert(PlayersArray, PlayerData)
+			end
+
+			table.sort(PlayersArray, function(a, b)
+			    if a.Value == b.Value then
+				return a.Name < b.Name
+			    end
+			    return a.Value
+			end)
+
+			Self:Clear()
+			Self:BulkAdd(PlayersArray)
 		    end
 
 		    PlayerService.PlayerAdded:Connect(function(Player)
-		        if Player ~= LocalPlayer and not DropdownPlayers[Player.Name] then
-		            DropdownPlayers[Player.Name] = {
-		                Name = Player.Name,
-		                Mode = ToggleMode == "Toggle" and "Toggle" or "Button",
-		                Value = false
-		            }
-		            RefreshDropdown()
-		        end
+			if Player ~= LocalPlayer and not DropdownPlayers[Player.Name] then
+			    DropdownPlayers[Player.Name] = {
+				Name = Player.Name,
+				Mode = ToggleMode == "Toggle" and "Toggle" or "Button",
+				Value = false
+			    }
+			    RefreshDropdown()
+			end
 		    end)
-		
+
 		    PlayerService.PlayerRemoving:Connect(function(Player)
-		        if DropdownPlayers[Player.Name] then
-		            DropdownPlayers[Player.Name] = nil
-		            RefreshDropdown()
-		        end
+			if DropdownPlayers[Player.Name] then
+			    DropdownPlayers[Player.Name] = nil
+			    RefreshDropdown()
+			end
 		    end)
+
 		    RefreshDropdown()
 		end
 
