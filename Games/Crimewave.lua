@@ -1,4 +1,4 @@
--- loadstring(game:HttpGet('https://raw.githubusercontent.com/Pixeluted/adoniscries/refs/heads/main/Source.lua'))()
+loadstring(game:HttpGet('https://raw.githubusercontent.com/Pixeluted/adoniscries/refs/heads/main/Source.lua'))()
 
 local Players = game:GetService('Players')
 local ReplicatedStorage = game:GetService('ReplicatedStorage')
@@ -102,9 +102,8 @@ local Window = dankWARE.Utilities.Interface:Window({Name = 'dankWARE', Enabled =
         local HitSection = MiscellaneousTab:Section({Name = 'Hit', Side = 'Right'}) do
             HitSection:Toggle({Name = 'Logs', Flag = 'Miscellaneous/Hit/Logs', Value = false})
             HitSection:Toggle({Name = 'Sounds', Flag = 'Miscellaneous/Hit/Sounds', Value = false})
-
-            HitSection:Dropdown({Name = 'Sound', Flag = 'Miscellaneous/Hit/Sound', List = DropdownLimbs})
             HitSection:Slider({Name = 'Window', Flag = 'Miscellaneous/Hit/Window', Min = 0, Max = 1, Precise = 1, Unit = '', Value = 0.2})
+            HitSection:Dropdown({Name = 'Sound', Flag = 'Miscellaneous/Hit/Sound', List = DropdownLimbs})
         end
     end
 
@@ -251,9 +250,13 @@ RunService.RenderStepped:Connect(function()
         end
 
         if Window.Flags['Combat/Aimbot/Enabled'] then
-            if table.find(Window.Flags['Combat/Aimbot/Method'], 'Angles') then
-                local ScreenPosition, OnScreen = Camera:WorldToViewportPoint(TargetLimb.Position)
-                AimAt(ScreenPosition, Options['Combat/Aimbot/Sensitivity'].Value / 100)
+            local Aimpart = Player.Character:FindFirstChild(Window.Flags['Combat/Filter/Aimpart'][1])
+
+            if Aimpart then
+                if table.find(Window.Flags['Combat/Aimbot/Method'], 'Angles') then
+                    local ScreenPosition, OnScreen = Camera:WorldToViewportPoint(Aimpart.Position)
+                    AimAt(ScreenPosition, Options['Combat/Aimbot/Sensitivity'].Value / 100)
+                end
             end
         end
     else
@@ -327,10 +330,3 @@ end)
 
 local EndTime = math.floor((tick() - dankWARE.StartTime) * 10) / 10
 dankWARE.Utilities.Interface:Toast({Title = `Took {EndTime} seconds`, Duration = 1.5, Color = Color3.new(0.0902, 0.65098, 0.92941, 0)})
-
--- local LocalPlayer = game.Players.LocalPlayer
--- local Connections = getconnections(LocalPlayer.Character.Humanoid.Changed)
-
--- for _, Connection in pairs(Connections) do
---     Connection:Enable()
--- end
