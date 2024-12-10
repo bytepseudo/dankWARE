@@ -66,6 +66,7 @@ local Window = dankWARE.Utilities.Interface:Window({Name = 'dankWARE', Enabled =
 
         local FilterSection = CombatTab:Section({Name = 'Filter', Side = 'Right'}) do
             FilterSection:Toggle({Name = 'Visible', Flag = 'Combat/Filter/Visible', Value = false})
+            FilterSection:Toggle({Name = 'Friendly', Flag = 'Combat/Filter/Friendly', Value = false})
         
             FilterSection:Slider({Name = 'Distance', Flag = 'Combat/Filter/Distance', Min = 1, Max = 1000, Value = 250, Precise = 1, Unit = ''})
 
@@ -160,9 +161,9 @@ function AimAt(Aimpart, Sensitivity)
 end
 
 function FilterCheck(Player)
-    local VisibleCheck = Toggles['Combat/Filters/Visible'].Value
-    local FriendCheck = Toggles['Combat/Filters/Friendly'].Value
-    local GroupCheck = Toggles['Combat/Filters/Group'].Value
+    local VisibleCheck = Window.Flags['Combat/Filter/Visible']
+    local FriendCheck = Window.Flags['Combat/Filter/Friendly']
+    -- local GroupCheck = Toggles['Combat/Filters/Group'].Value
 
     local IsValid = true
 
