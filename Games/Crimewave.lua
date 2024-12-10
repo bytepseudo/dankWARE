@@ -68,6 +68,16 @@ local Window = dankWARE.Utilities.Interface:Window({Name = 'dankWARE', Enabled =
         
             FilterSection:Slider({Name = 'Distance', Flag = 'Combat/Filter/Distance', Min = 1, Max = 1000, Value = 250, Precise = 1, Unit = ''})
 
+            local DropdownLimbs = {}
+            
+            for _, Limb in pairs(Limbs) do
+                if Limb == 'Head' then
+                    table.insert(DropdownLimbs, {Name = Limb, Mode = 'Button', Value = true})
+                else
+                    table.insert(DropdownLimbs, {Name = Limb, Mode = 'Button', Value = false})
+                end
+            end
+
             FilterSection:Dropdown({Name = 'Aimpart', Flag = 'Combat/Filter/Aimpart', List = DropdownLimbs})
             FilterSection:Dropdown({Name = 'Friends', Flag = 'Combat/Filter/Friends', List = DropdownPlayers}):RefreshToPlayers(true)
         end
