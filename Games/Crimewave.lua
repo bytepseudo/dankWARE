@@ -1,4 +1,4 @@
-loadstring(game:HttpGet('https://raw.githubusercontent.com/Pixeluted/adoniscries/refs/heads/main/Source.lua'))()
+-- loadstring(game:HttpGet('https://raw.githubusercontent.com/Pixeluted/adoniscries/refs/heads/main/Source.lua'))()
 
 local Players = game:GetService('Players')
 local ReplicatedStorage = game:GetService('ReplicatedStorage')
@@ -88,7 +88,7 @@ local Window = dankWARE.Utilities.Interface:Window({Name = 'dankWARE', Enabled =
 
     local MiscellaneousTab = Window:Tab({Name = 'Miscellaneous'}) do
         local CharacterSection = MiscellaneousTab:Section({Name = 'Character',Side = 'Left'}) do
-            CharacterSection:Toggle({Name = 'No Jump Cooldown', Flag = 'Combat/Fov/Visible', Value = false, Callback = function(Value)
+            CharacterSection:Toggle({Name = 'Jump Cooldown', Flag = 'Miscellaneous/Character/JumpCooldown', Value = false, Callback = function(Value)
                 local Connections = getconnections(LocalPlayer.Character.Humanoid.Changed)
 
                 if Value then
@@ -100,7 +100,11 @@ local Window = dankWARE.Utilities.Interface:Window({Name = 'dankWARE', Enabled =
         end
 
         local HitSection = MiscellaneousTab:Section({Name = 'Hit', Side = 'Right'}) do
+            HitSection:Toggle({Name = 'Logs', Flag = 'Miscellaneous/Hit/Logs', Value = false})
+            HitSection:Toggle({Name = 'Sounds', Flag = 'Miscellaneous/Hit/Sounds', Value = false})
 
+            HitSection:Dropdown({Name = 'Sound', Flag = 'Miscellaneous/Hit/Sound', List = DropdownLimbs})
+            HitSection:Slider({Name = 'Window', Flag = 'Miscellaneous/Hit/Window', Min = 0, Max = 1, Precise = 1, Unit = '', Value = 0.2})
         end
     end
 
@@ -247,11 +251,21 @@ RunService.RenderStepped:Connect(function()
         end
 
         if Window.Flags['Combat/Aimbot/Enabled'] then
-            -- table.find(Window.Flags['Combat/Aimbot/Method'], 'Angles')
+            if table.find(Window.Flags['Combat/Aimbot/Method'], 'Angles') then
+                local ScreenPosition, OnScreen = Camera:WorldToViewportPoint(TargetLimb.Position)
+                AimAt(ScreenPosition, Options['Combat/Aimbot/Sensitivity'].Value / 100)
+            end
         end
     else
         TargetPlayer = nil
         TargetLimb = nil
+    end
+end)
+
+LocalPlayer.CharacterAdded:Connect(function()
+    if Window.Flags['Miscellaneous/Character/JumpCooldown'] then
+        local Connections = getconnections(LocalPlayer.Character.Humanoid.Changed)
+        Connections[1]:Disable()
     end
 end)
 
