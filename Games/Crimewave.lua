@@ -127,7 +127,7 @@ function GetClosestFromMouse()
     for _, Player in pairs(Players:GetPlayers()) do
         if Player ~= LocalPlayer and AliveCheck(Player) then
             local Limb = Player.Character:FindFirstChild(Window.Flags['Combat/Filter/Aimpart'][1])
-
+            print(Limb)
             if Limb then
                 local Vector, OnScreen = Camera:WorldToScreenPoint(Limb.Position)
 
