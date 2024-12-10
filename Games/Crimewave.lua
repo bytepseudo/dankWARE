@@ -3,7 +3,6 @@ loadstring(game:HttpGet('https://raw.githubusercontent.com/Pixeluted/adoniscries
 local Players = game:GetService('Players')
 local ReplicatedStorage = game:GetService('ReplicatedStorage')
 local UserInputService = game:GetService('UserInputService')
-local TweenService = game:GetService('TweenService')
 local RunService = game:GetService('RunService')
 
 local LocalPlayer = Players.LocalPlayer
@@ -133,6 +132,7 @@ function GetClosestFromMouse()
                 local Vector, OnScreen = Camera:WorldToScreenPoint(Limb.Position)
 
                 if OnScreen then
+                    local MouseLocation = UserInputService:GetMouseLocation()
                     local Distance = (Vector2.new(MouseLocation.X, MouseLocation.Y) - Vector2.new(Vector.X, Vector.Y)).Magnitude
 
                     if Distance <= FovCircle.Size then
