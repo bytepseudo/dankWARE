@@ -257,7 +257,7 @@ RunService.RenderStepped:Connect(function()
             if Aimpart then
                 if table.find(Window.Flags['Combat/Aimbot/Method'], 'Angles') then
                     local ScreenPosition, OnScreen = Camera:WorldToViewportPoint(Aimpart.Position)
-                    AimAt(ScreenPosition, Options['Combat/Aimbot/Sensitivity'].Value / 100)
+                    AimAt(ScreenPosition, Window.Flags['Combat/Aimbot/Sensitivity'] / 100)
                 end
             end
         end
