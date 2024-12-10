@@ -1,4 +1,4 @@
-loadstring(game:HttpGet('https://raw.githubusercontent.com/Pixeluted/adoniscries/refs/heads/main/Source.lua'))()
+-- loadstring(game:HttpGet('https://raw.githubusercontent.com/Pixeluted/adoniscries/refs/heads/main/Source.lua'))()
 
 local Players = game:GetService('Players')
 local ReplicatedStorage = game:GetService('ReplicatedStorage')
@@ -237,55 +237,42 @@ RunService.RenderStepped:Connect(function()
     end
 end)
 
--- local OldNameCall; OldNameCall = hookmetamethod(game, '__namecall', function(Self, ...)
---     if checkcaller() then return OldNameCall(Self, ...) end
+local OldNameCall; OldNameCall = hookmetamethod(game, '__namecall', function(Self, ...)
+    if checkcaller() then return OldNameCall(Self, ...) end
 
---     local Method, Args = getnamecallmethod(), {...}
+    local Method, Args = getnamecallmethod(), {...}
 
---     if Self.Name == 'NetworkEvent' then
---         -- local HitLogs, HitSounds = Options['Miscellaneous/HitLogs'].Value, Options['Miscellaneous/HitSounds'].Value
-        
---         if Args[4] and table.find(Limbs, Args[4][1].Name) then
---             task.spawn(function()
---                 setthreadidentity(5)
+    if Self.Name == 'NetworkEvent' then
+        if Args[4] and Args[4][1] then
+            local Part = Args[4][1]
+            local Player = Players:GetPlayerFromCharacter(Part.Parent:IsA('Accessory') and Part.Parent.Parent or Part.Parent)
 
---                 local Player = Players:GetPlayerFromCharacter(Args[2].Parent)
-            
---                 if Player then
---                     local Start, End = tick()
+            if Player then
+                local Start, End = tick()
 
---                     local Humanoid = Player.Character.Humanoid
---                     local OldHealth = Humanoid.Health
-                    
---                     Humanoid.HealthChanged:Wait()
-                    
---                     End = tick() - Start
-                    
---                     if End < 0.2 then
---                         local Damage = math.floor((OldHealth - Humanoid.Health) * 10) / 10
+                local Humanoid = Player.Character.Humanoid
+                local OldHealth = Humanoid.Health
 
---                         -- if HitLogs then
---                             dankWARE.Utilities.Interface:Notify(`dankWARE | Hit {Player.Name} in the {Args[2].Name} for {Damage}`, 1.5)
---                         -- end
-                    
---                         -- if HitSounds then
---                             -- PlaySound(HitSounds[Options['Miscellaneous/HitSound'].Value])
---                         -- end
---                     end
---                 end
---             end)
---         end
---     end
+                Humanoid.HealthChanged:Wait()
 
---     return OldNameCall(Self, ...)
--- end)
+                End = tick() - Start
+
+                if End < 0.2 then
+                    local Damage = math.floor((OldHealth - Humanoid.Health) * 10) / 10
+                    dankWARE.Utilities.Interface:Notify(`dankWARE | Hit {Player.Name} in the {Args[2].Name} for {Damage}`, 1.5)
+                end
+            end
+        end
+    end
+
+    return OldNameCall(Self, ...)
+end)
 
 local OldIndex; OldIndex = hookmetamethod(game, '__index', function(Self, Index)
     if checkcaller() then return OldIndex(Self, Index) end
 
     if Self == Mouse then
         if Window.Flags['Combat/Aimbot/Enabled'] and table.find(Window.Flags['Combat/Aimbot/Method'], 'Redirect') and math.random(100) <= Window.Flags['Combat/Aimbot/Chance'] then
-            print('aimbot')
             if TargetPlayer and TargetPlayer.Character then
 
                 if TargetLimb then
