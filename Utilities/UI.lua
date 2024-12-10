@@ -3758,17 +3758,66 @@ Bracket.Elements = {
 			end
 		end
 		function Dropdown.RefreshToPlayers(Self, ToggleMode)
-			local Players = {}
-			for Index, Player in pairs(PlayerService:GetPlayers()) do
-				if Player == LocalPlayer then continue end
-				table.insert(Players, {Name = Player.Name,
-					Mode = ToggleMode == "Toggle" or "Button"
-				})
-			end
-			Self:Clear()
-			Self:BulkAdd(Players)
-		end
+		    local DropdownPlayers = {}
+		    local DropdownPlayers2 = {}
 
+		    for _, Player in pairs(PlayerService:GetPlayers()) do
+		        if Player == LocalPlayer then continue end
+		        table.insert(DropdownPlayers, {
+		            Name = Player.Name,
+		            Mode = (ToggleMode == "Toggle" and "Toggle") or "Button",
+		            Value = false
+		        })
+		    end
+					
+		    PlayerService.PlayerAdded:Connect(function(Player)
+		        if Player == LocalPlayer then return end
+		
+		        DropdownPlayers2 = {}
+		
+		        for _, ExistingPlayer in pairs(PlayerService:GetPlayers()) do
+		            local Found = false
+								
+		            for _, OldPlayer in pairs(DropdownPlayers) do
+		                if ExistingPlayer.Name == OldPlayer.Name then
+		                    Found = true
+		                    table.insert(DropdownPlayers2, {
+		                        Name = OldPlayer.Name,
+		                        Mode = OldPlayer.Mode,
+		                        Value = OldPlayer.Value
+		                    })
+		                    break
+		                end
+		            end
+								
+		            if not Found then
+		                table.insert(DropdownPlayers2, {
+		                    Name = ExistingPlayer.Name,
+		                    Mode = (ToggleMode == "Toggle" and "Toggle") or "Button",
+		                    Value = false
+		                })
+		            end
+		        end
+
+		        DropdownPlayers = DropdownPlayers2
+
+		        Self:Clear()
+		        Self:BulkAdd(DropdownPlayers)
+		    end)
+		
+		    PlayerService.PlayerRemoving:Connect(function(Player)
+		        for Index, Entry in ipairs(DropdownPlayers) do
+		            if Entry.Name == Player.Name then
+		                table.remove(DropdownPlayers, Index)
+		                break
+		            end
+		        end
+		        Self:Clear()
+		        Self:BulkAdd(DropdownPlayers)
+		    end)
+		    Self:Clear()
+		    Self:BulkAdd(DropdownPlayers)
+		end
 		function Dropdown:Tooltip(Text)
 			Dropdown.Tooltip = Bracket.Elements.Tooltip(DropdownAsset, {Text = Text})
 		end
