@@ -33,7 +33,6 @@ dankWARE.Game = GetGameData()
 dankWARE.Utilities.Drawing = LoadScript('Utilities/Drawing.lua')
 dankWARE.Utilities.Interface = LoadScript('Utilities/UI.lua')
 
-
 if dankWARE.Game then
     dankWARE.StartTime = tick()
     dankWARE.Utilities.Interface:Toast({Title = 'Loading dankWARE', Duration = 1.5, Color = Color3.new(0.0902, 0.65098, 0.92941, 0)})
