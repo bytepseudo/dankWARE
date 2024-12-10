@@ -167,10 +167,12 @@ function FilterCheck(Player)
 
     local IsValid = true
 
-    if not TargetLimb then return false end
+    local Aimpart = Player.Character:FindFirstChild(Window.Flags['Combat/Filter/Aimpart'][1])
+
+    if not Aimpart then return false end
 
     if VisibleCheck then
-        local Visible = IsVisible(TargetLimb.Position)
+        local Visible = IsVisible(Aimpart.Position)
 
         if not (Visible and Visible.Instance:IsDescendantOf(Player.Character)) then
             IsValid = false
@@ -219,7 +221,7 @@ RunService.RenderStepped:Connect(function()
         if Player then
             if FilterCheck(Player) then
                 TargetPlayer = Player
-                TargetLimb = TargetPlayer.Character[Window.Flags['Combat/Filter/Aimpart'][1]]
+                TargetLimb = Player.Character[Window.Flags['Combat/Filter/Aimpart'][1]]
             else
                 TargetPlayer = nil
                 TargetLimb = nil
@@ -304,4 +306,4 @@ local OldIndex; OldIndex = hookmetamethod(game, '__index', function(Self, Index)
 end)
 
 local EndTime = math.floor((tick() - dankWARE.StartTime) * 10) / 10
-dankWARE.Utilities.Interface:Toast({Title = `Loaded in {EndTime} seconds`, Duration = 1.5, Color = Color3.new(0.0902, 0.65098, 0.92941, 0)})
+dankWARE.Utilities.Interface:Toast({Title = `Took {EndTime} seconds`, Duration = 1.5, Color = Color3.new(0.0902, 0.65098, 0.92941, 0)})
