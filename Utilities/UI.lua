@@ -3765,7 +3765,7 @@ Bracket.Elements = {
 		        if Player == LocalPlayer then continue end
 		        table.insert(DropdownPlayers, {
 		            Name = Player.Name,
-		            Mode = (ToggleMode == "Toggle" and "Toggle") or "Button",
+		            Mode = "Toggle",
 		            Value = false
 		        })
 		    end
