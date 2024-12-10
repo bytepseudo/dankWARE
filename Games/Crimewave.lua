@@ -136,7 +136,7 @@ function GetClosestFromMouse()
                     local MouseLocation = UserInputService:GetMouseLocation()
                     local Distance = (Vector2.new(MouseLocation.X, MouseLocation.Y) - Vector2.new(Vector.X, Vector.Y)).Magnitude
 
-                    if Distance <= FovCircle.Radius then
+                    if Distance <= Window.Flags['Combat/Fov/Size'] then
                         if Distance < ClosestDistance then
                             ClosestDistance = Distance
                             ClosestPlayer = Player
