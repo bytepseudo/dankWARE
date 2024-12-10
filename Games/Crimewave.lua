@@ -1,4 +1,4 @@
--- loadstring(game:HttpGet('https://raw.githubusercontent.com/Pixeluted/adoniscries/refs/heads/main/Source.lua'))()
+loadstring(game:HttpGet('https://raw.githubusercontent.com/Pixeluted/adoniscries/refs/heads/main/Source.lua'))()
 
 local Players = game:GetService('Players')
 local ReplicatedStorage = game:GetService('ReplicatedStorage')
@@ -83,6 +83,24 @@ local Window = dankWARE.Utilities.Interface:Window({Name = 'dankWARE', Enabled =
 
             FilterSection:Dropdown({Name = 'Aimpart', Flag = 'Combat/Filter/Aimpart', List = DropdownLimbs})
             FilterSection:Dropdown({Name = 'Friends', Flag = 'Combat/Filter/Friends', List = DropdownPlayers}):RefreshToPlayers(true)
+        end
+    end
+
+    local MiscellaneousTab = Window:Tab({Name = 'Miscellaneous'}) do
+        local CharacterSection = MiscellaneousTab:Section({Name = 'Character',Side = 'Left'}) do
+            CharacterSection:Toggle({Name = 'No Jump Cooldown', Flag = 'Combat/Fov/Visible', Value = false, Callback = function(Value)
+                local Connections = getconnections(LocalPlayer.Character.Humanoid.Changed)
+
+                if Value then
+                    Connections[1]:Disable()
+                else
+                    Connections[1]:Enable()
+                end
+            end})
+        end
+
+        local HitSection = MiscellaneousTab:Section({Name = 'Hit', Side = 'Right'}) do
+
         end
     end
 
@@ -295,3 +313,10 @@ end)
 
 local EndTime = math.floor((tick() - dankWARE.StartTime) * 10) / 10
 dankWARE.Utilities.Interface:Toast({Title = `Took {EndTime} seconds`, Duration = 1.5, Color = Color3.new(0.0902, 0.65098, 0.92941, 0)})
+
+-- local LocalPlayer = game.Players.LocalPlayer
+-- local Connections = getconnections(LocalPlayer.Character.Humanoid.Changed)
+
+-- for _, Connection in pairs(Connections) do
+--     Connection:Enable()
+-- end
