@@ -1,4 +1,4 @@
---loadstring(game:HttpGet('https://raw.githubusercontent.com/Pixeluted/adoniscries/refs/heads/main/Source.lua'))()
+loadstring(game:HttpGet('https://raw.githubusercontent.com/Pixeluted/adoniscries/refs/heads/main/Source.lua'))()
 
 local Players = game:GetService('Players')
 local ReplicatedStorage = game:GetService('ReplicatedStorage')
@@ -164,7 +164,7 @@ end
 function FilterCheck(Player)
     local VisibleCheck = Window.Flags['Combat/Filter/Visible']
     local FriendCheck = Window.Flags['Combat/Filter/Friendly']
-    local TeamCheck = Toggles['Combat/Filter/Team'].Value
+    local TeamCheck = Window.Flags['Combat/Filter/Team']
 
     local IsValid = true
 
