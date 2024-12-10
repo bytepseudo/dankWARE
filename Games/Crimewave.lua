@@ -284,14 +284,14 @@ local OldIndex; OldIndex = hookmetamethod(game, '__index', function(Self, Index)
 
     if Self == Mouse then
         if Window.Flags['Combat/Aimbot/Enabled'] and table.find(Window.Flags['Combat/Aimbot/Method'], 'Redirect') and math.random(100) <= Window.Flags['Combat/Aimbot/Chance'] then
+            print('aimbot')
             if TargetPlayer and TargetPlayer.Character then
-                local Aimpart = TargetLimb
-                
-                if Aimpart then
+
+                if TargetLimb then
                     if string.find(Index:lower(), 'target') then
-                        return Aimpart
+                        return TargetLimb
                     elseif string.find(Index:lower(), 'hit') then
-                        return Aimpart.CFrame
+                        return TargetLimb.CFrame
                     end
                 end
             end
