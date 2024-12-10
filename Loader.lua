@@ -35,8 +35,6 @@ dankWARE.Utilities.Interface = LoadScript('Utilities/UI.lua')
 
 if dankWARE.Game then
     dankWARE.StartTime = tick()
-    dankWARE.Utilities.Interface:Toast({Title = 'Loading dankWARE', Duration = 1.5, Color = Color3.new(0.0902, 0.65098, 0.92941, 0)})
-
     LoadScript(dankWARE.Game.Path)
 else
     dankWARE.Utilities.Interface:Toast({Title = 'Unsupported Game', Duration = 2, Color = Color3.new(0.808, 0.161, 0.173, 0)})
