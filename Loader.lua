@@ -1,15 +1,11 @@
-local dankWARE = getgenv().dankWARE
-
-local StartTime, EndTime = tick()
-
-dankWARE = {
+getgenv().dankWARE = {
     Source = 'https://raw.githubusercontent.com/bytepseudo/dankWARE/main/',
     Utilities = {},
 
     Games = {
         ['3039388345'] = {Name = 'Shinjuku, 2006', Path = 'Games/Shinjuku6.lua'},
         ['4483381582'] = {Name = 'Shinjuku, 1988', Path = 'Games/Shinjuku8.lua'},
-        ['9896617899'] = {Name = 'Shinjuku, 1988', Path = 'Games/Crimewave.lua'},
+        ['9896617899'] = {Name = 'Miami 1986', Path = 'Games/Crimewave.lua'},
         ['4483381587'] = {Name = 'Baseplate', Path = 'Games/Baseplate.lua'}
     }
 }
@@ -37,11 +33,12 @@ dankWARE.Game = GetGameData()
 dankWARE.Utilities.Drawing = LoadScript('Utilities/Drawing.lua')
 dankWARE.Utilities.Interface = LoadScript('Utilities/UI.lua')
 
+
 if dankWARE.Game then
+    dankWARE.StartTime = tick()
     dankWARE.Utilities.Interface:Toast({Title = 'Loading dankWARE', Duration = 1.5, Color = Color3.new(0.0902, 0.65098, 0.92941, 0)})
+
     LoadScript(dankWARE.Game.Path)
-    EndTime = math.floor((tick() - StartTime) * 10) / 10
-    dankWARE.Utilities.Interface:Toast({Title = `Took {EndTime} seconds to load dankWARE`, Duration = 2, Color = Color3.new(0.0902, 0.65098, 0.92941, 0)})
 else
-    dankWARE.Utilities.Interface:Toast({Title = 'Unsupported Game!', Duration = 2, Color = Color3.new(0.808, 0.161, 0.173, 0)})
+    dankWARE.Utilities.Interface:Toast({Title = 'Unsupported Game', Duration = 2, Color = Color3.new(0.808, 0.161, 0.173, 0)})
 end
