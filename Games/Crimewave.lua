@@ -1,4 +1,4 @@
-loadstring(game:HttpGet('https://raw.githubusercontent.com/Pixeluted/adoniscries/refs/heads/main/Source.lua'))()
+--loadstring(game:HttpGet('https://raw.githubusercontent.com/Pixeluted/adoniscries/refs/heads/main/Source.lua'))()
 
 local Players = game:GetService('Players')
 local ReplicatedStorage = game:GetService('ReplicatedStorage')
@@ -67,6 +67,7 @@ local Window = dankWARE.Utilities.Interface:Window({Name = 'dankWARE', Enabled =
         local FilterSection = CombatTab:Section({Name = 'Filter', Side = 'Right'}) do
             FilterSection:Toggle({Name = 'Visible', Flag = 'Combat/Filter/Visible', Value = false})
             FilterSection:Toggle({Name = 'Friendly', Flag = 'Combat/Filter/Friendly', Value = false})
+            FilterSection:Toggle({Name = 'Team', Flag = 'Combat/Filter/Team', Value = false})
         
             FilterSection:Slider({Name = 'Distance', Flag = 'Combat/Filter/Distance', Min = 1, Max = 1000, Value = 250, Precise = 1, Unit = ''})
 
@@ -163,7 +164,7 @@ end
 function FilterCheck(Player)
     local VisibleCheck = Window.Flags['Combat/Filter/Visible']
     local FriendCheck = Window.Flags['Combat/Filter/Friendly']
-    -- local GroupCheck = Toggles['Combat/Filters/Group'].Value
+    local TeamCheck = Toggles['Combat/Filter/Team'].Value
 
     local IsValid = true
 
@@ -185,15 +186,11 @@ function FilterCheck(Player)
         end
     end
 
-    -- if GroupCheck then
-    --     local PlayerGroup = Player.PlayerParty.Value
-
-    --     if CurrentGroup ~= nil and PlayerGroup ~= nil then
-    --         if PlayerGroup == CurrentGroup then
-    --             IsValid = false
-    --         end
-    --     end
-    -- end
+    if TeamCheck then
+        if Player.Team == LocalPlayer.Team then
+            IsValid = false
+        end
+    end
 
     return IsValid
 end
@@ -240,48 +237,48 @@ RunService.RenderStepped:Connect(function()
     end
 end)
 
-local OldNameCall; OldNameCall = hookmetamethod(game, '__namecall', function(Self, ...)
-    if checkcaller() then return OldNameCall(Self, ...) end
+-- local OldNameCall; OldNameCall = hookmetamethod(game, '__namecall', function(Self, ...)
+--     if checkcaller() then return OldNameCall(Self, ...) end
 
-    local Method, Args = getnamecallmethod(), {...}
+--     local Method, Args = getnamecallmethod(), {...}
 
-    if Self.Name == 'NetworkEvent' then
-        -- local HitLogs, HitSounds = Options['Miscellaneous/HitLogs'].Value, Options['Miscellaneous/HitSounds'].Value
+--     if Self.Name == 'NetworkEvent' then
+--         -- local HitLogs, HitSounds = Options['Miscellaneous/HitLogs'].Value, Options['Miscellaneous/HitSounds'].Value
         
-        if Args[4] and table.find(Limbs, Args[4][1].Name) then
-            task.spawn(function()
-                setthreadidentity(5)
+--         if Args[4] and table.find(Limbs, Args[4][1].Name) then
+--             task.spawn(function()
+--                 setthreadidentity(5)
 
-                local Player = Players:GetPlayerFromCharacter(Args[2].Parent)
+--                 local Player = Players:GetPlayerFromCharacter(Args[2].Parent)
             
-                if Player then
-                    local Start, End = tick()
+--                 if Player then
+--                     local Start, End = tick()
 
-                    local Humanoid = Player.Character.Humanoid
-                    local OldHealth = Humanoid.Health
+--                     local Humanoid = Player.Character.Humanoid
+--                     local OldHealth = Humanoid.Health
                     
-                    Humanoid.HealthChanged:Wait()
+--                     Humanoid.HealthChanged:Wait()
                     
-                    End = tick() - Start
+--                     End = tick() - Start
                     
-                    if End < 0.2 then
-                        local Damage = math.floor((OldHealth - Humanoid.Health) * 10) / 10
+--                     if End < 0.2 then
+--                         local Damage = math.floor((OldHealth - Humanoid.Health) * 10) / 10
 
-                        -- if HitLogs then
-                            dankWARE.Utilities.Interface:Notify(`dankWARE | Hit {Player.Name} in the {Args[2].Name} for {Damage}`, 1.5)
-                        -- end
+--                         -- if HitLogs then
+--                             dankWARE.Utilities.Interface:Notify(`dankWARE | Hit {Player.Name} in the {Args[2].Name} for {Damage}`, 1.5)
+--                         -- end
                     
-                        -- if HitSounds then
-                            -- PlaySound(HitSounds[Options['Miscellaneous/HitSound'].Value])
-                        -- end
-                    end
-                end
-            end)
-        end
-    end
+--                         -- if HitSounds then
+--                             -- PlaySound(HitSounds[Options['Miscellaneous/HitSound'].Value])
+--                         -- end
+--                     end
+--                 end
+--             end)
+--         end
+--     end
 
-    return OldNameCall(Self, ...)
-end)
+--     return OldNameCall(Self, ...)
+-- end)
 
 local OldIndex; OldIndex = hookmetamethod(game, '__index', function(Self, Index)
     if checkcaller() then return OldIndex(Self, Index) end
