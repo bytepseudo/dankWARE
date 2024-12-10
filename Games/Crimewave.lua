@@ -31,6 +31,8 @@ local FovCircle = dankWARE.Utilities.Drawing:AddDrawing('Circle', {
     Text = 'Enabled: false, Target: None'
 })
 
+print('gg')
+
 -- CombatInfo.Visible = true
 -- CombatInfo.Position = Vector2.new(960, 960)
 -- CombatInfo.Center = true
