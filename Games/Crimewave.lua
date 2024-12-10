@@ -252,7 +252,7 @@ RunService.RenderStepped:Connect(function()
         end
 
         if Window.Flags['Combat/Aimbot/Enabled'] then
-            local Aimpart = Player.Character:FindFirstChild(Window.Flags['Combat/Filter/Aimpart'][1])
+            local Aimpart = Player and Player.Character:FindFirstChild(Window.Flags['Combat/Filter/Aimpart'][1])
 
             if Aimpart then
                 if table.find(Window.Flags['Combat/Aimbot/Method'], 'Angles') then
