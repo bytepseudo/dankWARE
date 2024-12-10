@@ -3764,7 +3764,7 @@ Bracket.Elements = {
 		        if Player ~= LocalPlayer then
 		            DropdownPlayers[Player.Name] = {
 		                Name = Player.Name,
-		                Mode = ToggleMode == "Toggle" and "Toggle" or "Button",
+		                Mode = "Toggle",
 		                Value = false
 		            }
 		        end
