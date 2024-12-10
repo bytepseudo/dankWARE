@@ -3759,65 +3759,46 @@ Bracket.Elements = {
 		end
 		function Dropdown.RefreshToPlayers(Self, ToggleMode)
 		    local DropdownPlayers = {}
-		    local DropdownPlayers2 = {}
 
 		    for _, Player in pairs(PlayerService:GetPlayers()) do
-		        if Player == LocalPlayer then continue end
-		        table.insert(DropdownPlayers, {
-		            Name = Player.Name,
-		            Mode = "Toggle",
-		            Value = false
-		        })
-		    end
-					
-		    PlayerService.PlayerAdded:Connect(function(Player)
-		        if Player == LocalPlayer then return end
-		
-		        DropdownPlayers2 = {}
-		
-		        for _, ExistingPlayer in pairs(PlayerService:GetPlayers()) do
-		            local Found = false
-								
-		            for _, OldPlayer in pairs(DropdownPlayers) do
-		                if ExistingPlayer.Name == OldPlayer.Name then
-		                    Found = true
-		                    table.insert(DropdownPlayers2, {
-		                        Name = OldPlayer.Name,
-		                        Mode = OldPlayer.Mode,
-		                        Value = OldPlayer.Value
-		                    })
-		                    break
-		                end
-		            end
-								
-		            if not Found then
-		                table.insert(DropdownPlayers2, {
-		                    Name = ExistingPlayer.Name,
-		                    Mode = (ToggleMode == "Toggle" and "Toggle") or "Button",
-		                    Value = false
-		                })
-		            end
+		        if Player ~= LocalPlayer then
+		            DropdownPlayers[Player.Name] = {
+		                Name = Player.Name,
+		                Mode = ToggleMode == "Toggle" and "Toggle" or "Button",
+		                Value = false
+		            }
 		        end
+		    end
 
-		        DropdownPlayers = DropdownPlayers2
-
+		    local function RefreshDropdown()
+		        local PlayersArray = {}
+		        for _, PlayerData in pairs(DropdownPlayers) do
+		            table.insert(PlayersArray, PlayerData)
+		        end
 		        Self:Clear()
-		        Self:BulkAdd(DropdownPlayers)
+		        Self:BulkAdd(PlayersArray)
+		    end
+
+		    PlayerService.PlayerAdded:Connect(function(Player)
+		        if Player ~= LocalPlayer and not DropdownPlayers[Player.Name] then
+		            DropdownPlayers[Player.Name] = {
+		                Name = Player.Name,
+		                Mode = ToggleMode == "Toggle" and "Toggle" or "Button",
+		                Value = false
+		            }
+		            RefreshDropdown()
+		        end
 		    end)
 		
 		    PlayerService.PlayerRemoving:Connect(function(Player)
-		        for Index, Entry in ipairs(DropdownPlayers) do
-		            if Entry.Name == Player.Name then
-		                table.remove(DropdownPlayers, Index)
-		                break
-		            end
+		        if DropdownPlayers[Player.Name] then
+		            DropdownPlayers[Player.Name] = nil
+		            RefreshDropdown()
 		        end
-		        Self:Clear()
-		        Self:BulkAdd(DropdownPlayers)
 		    end)
-		    Self:Clear()
-		    Self:BulkAdd(DropdownPlayers)
+		    RefreshDropdown()
 		end
+
 		function Dropdown:Tooltip(Text)
 			Dropdown.Tooltip = Bracket.Elements.Tooltip(DropdownAsset, {Text = Text})
 		end
