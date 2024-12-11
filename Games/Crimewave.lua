@@ -100,7 +100,7 @@ local Window = dankWARE.Utilities.Interface:Window({Name = 'dankWARE', Enabled =
                 local TeamsArray = {}
 
                 for _, Team in pairs(TeamsDropdownList) do
-                    table.insert(TestTeams, Team.Name)
+                    table.insert(TeamsArray, Team.Name)
                 end
 
                 table.sort(TeamsArray, function(a, b)
