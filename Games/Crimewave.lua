@@ -20,21 +20,16 @@ local HitSound = Instance.new('Sound', Camera)
 HitSound.Volume = 3.3
 
 local FovCircle = Drawing.new('Circle')
-local CombatInfo = Drawing.new('Text')
 
--- local FovCircle = dankWARE.Utilities.Drawing:AddDrawing('Circle')
-
-CombatInfo.Visible = true
-CombatInfo.Position = Vector2.new(960, 960)
-CombatInfo.Center = true
-CombatInfo.Outline = true
-CombatInfo.Color = Color3.new(1, 1, 1)
-CombatInfo.OutlineColor = Color3.new(0, 0, 0)
-CombatInfo.Text = 'Enabled: false, Target: None'
-
-local RaycastParams = RaycastParams.new()
-RaycastParams.FilterDescendantsInstances = {LocalPlayer.Character}
-RaycastParams.FilterType = Enum.RaycastFilterType.Blacklist
+local CombatText = dankWARE.Utilities.Drawing:AddDrawing('Text', {
+    Visible = true,
+    Position = Vector2.new(960, 960),
+    Center = true,
+    Outline = true,
+    Color = Color3.new(1, 1, 1),
+    OutlineColor = Color3.new(0, 0, 0),
+    Text = 'Enabled: false, Target: None'
+})
 
 local Window = dankWARE.Utilities.Interface:Window({Name = 'dankWARE', Enabled = true, Color = Color3.new(0.0902, 0.65098, 0.92941, 0), Size = UDim2.new(0,496,0,496), Position = UDim2.new(0.5,-248,0.5,-248)}) do
     local CombatTab = Window:Tab({Name = 'Combat'}) do
@@ -120,104 +115,6 @@ end
 Window.Background.Image = ''
 Window.Flags['Background/CustomImage'] = ''
 
-function AliveCheck(Player)
-    if Player and Player.Character then
-        local Humanoid = Player.Character:FindFirstChild('Humanoid')
-
-        if Humanoid and Humanoid.Health > 0 then
-            return true
-        end
-    end
-
-    return false
-end
-
-function IsVisible(Position)
-	local Vector, OnScreen = Camera:WorldToScreenPoint(Position)
-
-	if OnScreen then
-		local Origin = Camera.CFrame.Position
-		local Direction = (Position - Origin).Unit * (Position - Origin).Magnitude
-
-		return Workspace:Raycast(Origin, Direction, RaycastParams)
-	end
-
-	return false
-end
-
-function GetClosestFromMouse()
-    local ClosestPlayer = nil
-    local ClosestDistance = math.huge
-
-    for _, Player in pairs(Players:GetPlayers()) do
-        if Player ~= LocalPlayer and AliveCheck(Player) then
-            local Limb = Player.Character:FindFirstChild(Window.Flags['Combat/Filter/Aimpart'][1])
-
-            if Limb then
-                local Vector, OnScreen = Camera:WorldToScreenPoint(Limb.Position)
-
-                if OnScreen then
-                    local MouseLocation = UserInputService:GetMouseLocation()
-                    local Distance = (Vector2.new(MouseLocation.X, MouseLocation.Y) - Vector2.new(Vector.X, Vector.Y)).Magnitude
-
-                    if Distance <= Window.Flags['Combat/Fov/Size'] then
-                        if Distance < ClosestDistance then
-                            ClosestDistance = Distance
-                            ClosestPlayer = Player
-                        end
-                    end
-                end
-            end
-        end
-    end
-
-    return ClosestPlayer, ClosestDistance
-end
-
-function AimAt(Aimpart, Sensitivity)
-    if not Aimpart then return end
-    local MouseLocation = UserInputService:GetMouseLocation()
-
-    mousemoverel(
-        (Aimpart.X - MouseLocation.X) * Sensitivity,
-        (Aimpart.Y - MouseLocation.Y) * Sensitivity
-    )
-end
-
-function FilterCheck(Player)
-    local VisibleCheck = Window.Flags['Combat/Filter/Visible']
-    local FriendCheck = Window.Flags['Combat/Filter/Friendly']
-    local TeamCheck = Window.Flags['Combat/Filter/Team']
-
-    local IsValid = true
-
-    local Aimpart = Player.Character:FindFirstChild(Window.Flags['Combat/Filter/Aimpart'][1])
-
-    if not Aimpart then return false end
-
-    if VisibleCheck then
-        local Visible = IsVisible(Aimpart.Position)
-
-        if not (Visible and Visible.Instance:IsDescendantOf(Player.Character)) then
-            IsValid = false
-        end
-    end
-
-    if FriendCheck then
-        if table.find(Window.Flags['Combat/Filter/Friends'], Player.Name) then
-            IsValid = false
-        end
-    end
-
-    if TeamCheck then
-        if Player.Team == LocalPlayer.Team then
-            IsValid = false
-        end
-    end
-
-    return IsValid
-end
-
 RunService.RenderStepped:Connect(function()
     local MouseLocation = UserInputService:GetMouseLocation()
 
@@ -231,103 +128,7 @@ RunService.RenderStepped:Connect(function()
 
     FovCircle.Position = Vector2.new(MouseLocation.X, MouseLocation.Y)
 
-    CombatInfo.Text = `Enabled: {Window.Flags['Combat/Aimbot/Enabled']}, Target: {TargetPlayer or None}`
-end)
-
-RunService.RenderStepped:Connect(function()
-    if Window.Flags['Combat/Aimbot/Enabled'] then
-        local Player, Distance = GetClosestFromMouse()
-        
-        if Player then
-            if FilterCheck(Player) then
-                TargetPlayer = Player
-                TargetLimb = Player.Character[Window.Flags['Combat/Filter/Aimpart'][1]]
-            else
-                TargetPlayer = nil
-                TargetLimb = nil
-            end
-        else 
-            TargetPlayer = nil 
-            TargetLimb = nil
-        end
-
-        if Window.Flags['Combat/Aimbot/Enabled'] then
-            local Aimpart = Player and Player.Character:FindFirstChild(Window.Flags['Combat/Filter/Aimpart'][1])
-
-            if Aimpart then
-                if table.find(Window.Flags['Combat/Aimbot/Method'], 'Angles') then
-                    local ScreenPosition, OnScreen = Camera:WorldToViewportPoint(Aimpart.Position)
-                    AimAt(ScreenPosition, Window.Flags['Combat/Aimbot/Sensitivity'] / 100)
-                end
-            end
-        end
-    else
-        TargetPlayer = nil
-        TargetLimb = nil
-    end
-end)
-
-LocalPlayer.CharacterAdded:Connect(function()
-    if Window.Flags['Miscellaneous/Character/JumpCooldown'] then
-        local Connections = getconnections(LocalPlayer.Character.Humanoid.Changed)
-        Connections[1]:Disable()
-    end
-end)
-
-local OldNameCall; OldNameCall = hookmetamethod(game, '__namecall', function(Self, ...)
-    if checkcaller() then return OldNameCall(Self, ...) end
-
-    local Method, Args = getnamecallmethod(), {...}
-
-    if Self.Name == 'NetworkEvent' then
-        if Args[4] and Args[4][1] then
-            task.spawn(function()
-                setthreadidentity(5)
-
-                local Part = Args[4][1]
-                local Player = Players:GetPlayerFromCharacter(Part.Parent:IsA('Accessory') and Part.Parent.Parent or Part.Parent)
-    
-                if Player then
-                    local Start, End = tick()
-    
-                    local Humanoid = Player.Character.Humanoid
-                    local OldHealth = Humanoid.Health
-    
-                    Humanoid.HealthChanged:Wait()
-    
-                    End = tick() - Start
-    
-                    if End < 0.2 then
-                        local Damage = math.floor((OldHealth - Humanoid.Health) * 10) / 10
-                        dankWARE.Utilities.Interface:Notify(`dankWARE | Hit {Player.Name} in the {Args[2].Name} for {Damage}`, 1.5)
-                    end
-                end
-            end)
-        end
-    end
-
-    return OldNameCall(Self, ...)
-end)
-
-local OldIndex; OldIndex = hookmetamethod(game, '__index', function(Self, Index)
-    if checkcaller() then return OldIndex(Self, Index) end
-
-    if Self == Mouse then
-        if Window.Flags['Combat/Aimbot/Enabled'] and table.find(Window.Flags['Combat/Aimbot/Method'], 'Redirect') and math.random(100) <= Window.Flags['Combat/Aimbot/Chance'] then
-            if TargetPlayer and TargetPlayer.Character then
-
-                if TargetLimb then
-                    if string.find(Index:lower(), 'target') then
-                        return TargetLimb
-                    elseif string.find(Index:lower(), 'hit') then
-                        return TargetLimb.CFrame
-                    end
-                end
-            end
-        end
-    end
-
-    return OldIndex(Self, Index)
+    CombatText.Text = `Enabled: {Window.Flags['Combat/Aimbot/Enabled']}, Target: {TargetPlayer or None}`
 end)
 
 local EndTime = math.floor((tick() - dankWARE.StartTime) * 10) / 10
