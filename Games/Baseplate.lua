@@ -11,5 +11,12 @@ local PositionText = dankWARE.Utilities.Drawing:AddDrawing('Text', {
 })
 
 RunService.RenderStepped:Connect(function()
-    PositionText.Text = `Position: {tostring(game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame.Position)}`
+    local Position = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
+    local FlooredPosition = Vector3.new(
+        math.floor(position.X),
+        math.floor(position.Y),
+        math.floor(position.Z)
+    )
+        
+    PositionText.Text = `Position: {FlooredPosition.X}, {FlooredPosition.Y}, {FlooredPosition.Z}`
 end)
