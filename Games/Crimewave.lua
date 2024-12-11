@@ -5,6 +5,7 @@
 loadstring(game:HttpGet('https://raw.githubusercontent.com/Pixeluted/adoniscries/refs/heads/main/Source.lua'))()
 
 local Players = game:GetService('Players')
+local Teams = game:GetService('Teams')
 local ReplicatedStorage = game:GetService('ReplicatedStorage')
 local UserInputService = game:GetService('UserInputService')
 local RunService = game:GetService('RunService')
@@ -89,6 +90,54 @@ local Window = dankWARE.Utilities.Interface:Window({Name = 'dankWARE', Enabled =
 
             FilterSection:Dropdown({Name = 'Aimpart', Flag = 'Combat/Filter/Aimpart', List = DropdownLimbs})
             FilterSection:Dropdown({Name = 'Friends', Flag = 'Combat/Filter/Friends', List = DropdownPlayers}):RefreshToPlayers(true)
+
+            local TeamsDropdown = FilterSection:Dropdown({Name = 'Teams', Flag = 'Combat/Filter/Teams', List = {'Enomoto-ikka', 'Chosen Devils'}})
+
+            local TeamsDropdownList = {}
+
+            for _, Team in pairs(Teams:GetChildren()) do
+                table.insert(TeamsDropdownList, Team.Name)
+            end
+
+            local function RefreshDropdown()
+                local TeamsArray = {}
+
+                for _, Team in pairs(TeamsDropdownList) do
+                    table.insert(TestTeams, Team.Name)
+                end
+
+                table.sort(TeamsArray, function(a, b)
+                    if a.Value == b.Value then
+                        return a.Name < b.Name
+                    end
+
+                    return a.Value
+                end)
+
+                TeamsDropdown:Clear()
+                TeamsDropdown:BulkAdd(TeamsArray)
+            end
+
+            Teams.ChildAdded:Connect(function(Child)
+                if not TeamsDropdownList[Child.Name] then
+                    TeamsDropdownList[Child.Name] = {
+                        Name = Child.Name,
+                        Mode = 'Toggle',
+                        Value = false
+                    }
+
+                    RefreshDropdown()
+                end
+            end)
+
+            Teams.ChildRemoving:Connect(function(Child)
+                if TeamsDropdownList[Child.Name] then
+                    TeamsDropdownList[Child.Name] = nil
+                    RefreshDropdown()
+                end
+            end)
+
+            RefreshDropdown()
         end
     end
 
