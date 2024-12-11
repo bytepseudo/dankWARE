@@ -1,7 +1,5 @@
 loadstring(game:HttpGet('https://raw.githubusercontent.com/Pixeluted/adoniscries/refs/heads/main/Source.lua'))()
 
-print('gg were back')
-
 local Players = game:GetService('Players')
 local Teams = game:GetService('Teams')
 local ReplicatedStorage = game:GetService('ReplicatedStorage')
@@ -107,7 +105,6 @@ local Window = dankWARE.Utilities.Interface:Window({Name = 'dankWARE', Enabled =
                     table.insert(TeamsDropdownList, {Name = Team.Name, Mode = 'Toggle', Value = false})
                 end
 
-                TeamsDropdown.Value = {}
                 TeamsDropdown:Clear()
                 TeamsDropdown:BulkAdd(TeamsDropdownList)
             end})
@@ -312,7 +309,7 @@ end)
 
 LocalPlayer.CharacterAdded:Connect(function()
     LocalPlayer.Character:WaitForChild('Humanoid')
-    
+
     if Window.Flags['Miscellaneous/Character/JumpCooldown'] then
         local Connections = getconnections(LocalPlayer.Character.Humanoid.Changed)
         Connections[1]:Disable()
