@@ -1,3 +1,5 @@
+local RunService = game:GetService('RunService')
+
 local PositionText = dankWARE.Utilities.Drawing:AddDrawing('Text', {
     Visible = true,
     Position = Vector2.new(960, 960),
@@ -8,6 +10,6 @@ local PositionText = dankWARE.Utilities.Drawing:AddDrawing('Text', {
     Text = 'Position: 0, 0, 0'
 })
 
-game.RunService.RenderStepped:Connect(function()
+RunService.RenderStepped:Connect(function()
     PositionText.Text = `Position: {tostring(game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame.Position)}`
 end)
