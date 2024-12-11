@@ -1,5 +1,5 @@
 loadstring(game:HttpGet('https://raw.githubusercontent.com/Pixeluted/adoniscries/refs/heads/main/Source.lua'))()
-
+print('refresh teams!')
 local Players = game:GetService('Players')
 local Teams = game:GetService('Teams')
 local ReplicatedStorage = game:GetService('ReplicatedStorage')
@@ -86,30 +86,8 @@ local Window = dankWARE.Utilities.Interface:Window({Name = 'dankWARE', Enabled =
             end
 
             FilterSection:Dropdown({Name = 'Aimpart', Flag = 'Combat/Filter/Aimpart', List = DropdownLimbs})
-            FilterSection:Dropdown({Name = 'Friends', Flag = 'Combat/Filter/Friends', List = DropdownPlayers}):RefreshToPlayers(true)
-
-            FilterSection:Divider()
-
-            local TeamsDropdownList = {}
-
-            for _, Team in pairs(Teams:GetChildren()) do
-                table.insert(TeamsDropdownList, {Name = Team.Name, Mode = 'Toggle', Value = false})
-            end
-
-            FilterSection:Button({Name = 'Refresh Teams', Callback = function()
-                table.foreach(Window.Flags['Combat/Filter/Teams'], print)
-                
-                TeamsDropdownList = {}
-
-                for _, Team in pairs(Teams:GetChildren()) do
-                    table.insert(TeamsDropdownList, {Name = Team.Name, Mode = 'Toggle', Value = false})
-                end
-
-                TeamsDropdown:Clear()
-                TeamsDropdown:BulkAdd(TeamsDropdownList)
-            end})
-
-            local TeamsDropdown = FilterSection:Dropdown({Name = 'Teams', Flag = 'Combat/Filter/Teams', List = TeamsDropdownList})
+            FilterSection:Dropdown({Name = 'Friends', Flag = 'Combat/Filter/Friends', List = {}}):RefreshToPlayers(true)
+            FilterSection:Dropdown({Name = 'Teams', Flag = 'Combat/Filter/Teams', List = {}}):RefreshToTeams(true)
         end
     end
 
@@ -338,4 +316,4 @@ local OldIndex; OldIndex = hookmetamethod(game, '__index', function(Self, Index)
 end)
 
 local EndTime = math.floor((tick() - dankWARE.StartTime) * 10) / 10
-dankWARE.Utilities.Interface:Toast({Title = `Loaded in {EndTime} seconds`, Duration = 1.5, Color = Color3.new(0.0902, 0.65098, 0.92941, 0)})
+dankWARE.Utilities.Interface:Toast({Title = `Loaded in {EndTime} seconds`, Duration = 2.5, Color = Color3.new(0.0902, 0.65098, 0.92941, 0)})
