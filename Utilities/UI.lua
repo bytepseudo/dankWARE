@@ -3837,19 +3837,8 @@ Bracket.Elements = {
 				end)
 		
 				Self:Clear()
-				Self:BulkAdd(PlayersArray)	
+				Self:BulkAdd(TeamsArray)	
 			end
-		
-			PlayerService.PlayerAdded:Connect(function(Player)
-				if Player ~= LocalPlayer and not DropdownPlayers[Player.Name] then
-					DropdownPlayers[Player.Name] = {
-						Name = Player.Name,
-						Mode = ToggleMode == "Toggle" and "Toggle" or "Button",
-						Value = false
-					}
-					RefreshDropdown()
-				end
-			end)
 		
 			TeamsService.ChildAdded:Connect(function(Child)
 				if not DropdownTeams[Child.Name] then
