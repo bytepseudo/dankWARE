@@ -1,6 +1,6 @@
 loadstring(game:HttpGet('https://raw.githubusercontent.com/Pixeluted/adoniscries/refs/heads/main/Source.lua'))()
 
-print('improved baby!')
+print('were back baby!'
 
 local Players = game:GetService('Players')
 local Teams = game:GetService('Teams')
@@ -93,21 +93,21 @@ local Window = dankWARE.Utilities.Interface:Window({Name = 'dankWARE', Enabled =
             local TeamsDropdownList = {}
 
             for _, Team in pairs(Teams:GetChildren()) do
-                table.insert(TeamsDropdownList, Team.Name)
+                table.insert(TeamsDropdownList, {Name = Team.Name, Mode = 'Toggle', Value = false})
             end
-
-            local TeamsDropdown = FilterSection:Dropdown({Name = 'Teams', Flag = 'Combat/Filter/Teams', List = TeamsDropdownList})
 
             FilterSection:Button({Name = 'Refresh Teams', Callback = function()
                 TeamsDropdownList = {}
 
                 for _, Team in pairs(Teams:GetChildren()) do
-                    table.insert(TeamsDropdownList, Team.Name)
+                    table.insert(TeamsDropdownList, {Name = Team.Name, Mode = 'Toggle', Value = false})
                 end
 
                 TeamsDropdown:Clear()
                 TeamsDropdown:BulkAdd(TeamsDropdownList)
             end})
+
+            local TeamsDropdown = FilterSection:Dropdown({Name = 'Teams', Flag = 'Combat/Filter/Teams', List = TeamsDropdownList})
         end
     end
 
