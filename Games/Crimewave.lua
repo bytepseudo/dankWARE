@@ -1,6 +1,6 @@
 loadstring(game:HttpGet('https://raw.githubusercontent.com/Pixeluted/adoniscries/refs/heads/main/Source.lua'))()
 
-print('gg2')
+print('gg')
 
 local Players = game:GetService('Players')
 local ReplicatedStorage = game:GetService('ReplicatedStorage')
@@ -22,7 +22,7 @@ local HitSound = Instance.new('Sound', Camera)
 HitSound.Volume = 3.3
 
 local FovCircle = dankWARE.Utilities.Drawing:AddDrawing('Circle', {ZIndex = 4})
-local FovOutlineCircle = dankWARE.Utilities.Drawing:AddDrawing('Circle', {ZIndex = 3})
+local FovOutlineCircle = dankWARE.Utilities.Drawing:AddDrawing('Circle', {Color = Color3.new(0, 0, 0), ZIndex = 3})
 
 local CombatText = dankWARE.Utilities.Drawing:AddDrawing('Text', {
     Visible = true,
@@ -138,8 +138,8 @@ RunService.RenderStepped:Connect(function()
     FovCircle.NumSides = Window.Flags['Combat/Fov/Sides']
     FovOutlineCircle.NumSides = Window.Flags['Combat/Fov/Sides']
 
-    FovCircle.Thickness = Window.Flags['Combat/Fov/Thickness'] + 2
-    FovOutlineCircle.NumSides = Window.Flags['Combat/Fov/Sides']
+    FovCircle.Thickness = Window.Flags['Combat/Fov/Thickness']
+    FovOutlineCircle.Thickness = Window.Flags['Combat/Fov/Thickness'] + 2
 
     FovCircle.Position = Vector2.new(MouseLocation.X, MouseLocation.Y)
     FovOutlineCircle.Position = Vector2.new(MouseLocation.X, MouseLocation.Y)
