@@ -1,7 +1,5 @@
 loadstring(game:HttpGet('https://raw.githubusercontent.com/Pixeluted/adoniscries/refs/heads/main/Source.lua'))()
 
-print('were back baby!')
-
 local Players = game:GetService('Players')
 local Teams = game:GetService('Teams')
 local ReplicatedStorage = game:GetService('ReplicatedStorage')
@@ -90,11 +88,15 @@ local Window = dankWARE.Utilities.Interface:Window({Name = 'dankWARE', Enabled =
             FilterSection:Dropdown({Name = 'Aimpart', Flag = 'Combat/Filter/Aimpart', List = DropdownLimbs})
             FilterSection:Dropdown({Name = 'Friends', Flag = 'Combat/Filter/Friends', List = DropdownPlayers}):RefreshToPlayers(true)
 
+            -- FilterSection:Divider()
+
             local TeamsDropdownList = {}
 
             for _, Team in pairs(Teams:GetChildren()) do
                 table.insert(TeamsDropdownList, {Name = Team.Name, Mode = 'Toggle', Value = false})
             end
+
+            local TeamsDropdown = FilterSection:Dropdown({Name = 'Teams', Flag = 'Combat/Filter/Teams', List = TeamsDropdownList})
 
             FilterSection:Button({Name = 'Refresh Teams', Callback = function()
                 TeamsDropdownList = {}
@@ -106,8 +108,6 @@ local Window = dankWARE.Utilities.Interface:Window({Name = 'dankWARE', Enabled =
                 TeamsDropdown:Clear()
                 TeamsDropdown:BulkAdd(TeamsDropdownList)
             end})
-
-            local TeamsDropdown = FilterSection:Dropdown({Name = 'Teams', Flag = 'Combat/Filter/Teams', List = TeamsDropdownList})
         end
     end
 
@@ -241,7 +241,7 @@ function FilterCheck(Player)
         end
     end
 
-    return IsValid
+    return true
 end
 
 RunService.RenderStepped:Connect(function()
