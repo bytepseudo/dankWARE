@@ -1,5 +1,3 @@
-loadstring(game:HttpGet('https://raw.githubusercontent.com/Pixeluted/adoniscries/refs/heads/main/Source.lua'))()
-
 local Players = game:GetService('Players')
 local ReplicatedStorage = game:GetService('ReplicatedStorage')
 local UserInputService = game:GetService('UserInputService')
@@ -19,14 +17,8 @@ local TargetPlayer, TargetLimb = nil, nil
 local HitSound = Instance.new('Sound', Camera)
 HitSound.Volume = 3.3
 
-local Fov = {
-    Circle = dankWARE.Utilities.Drawing:AddDrawing('Circle', {
-        ZIndex = 4
-    }),
-    OutlineCircle = dankWARE.Utilities.Drawing:AddDrawing('Circle', {
-        ZIndex = 3
-    })
-}
+local FovCircle = dankWARE.Utilities.Drawing:AddDrawing('Circle', {ZIndex = 4})
+local FovOutlineCircle = dankWARE.Utilities.Drawing:AddDrawing('Circle', {ZIndex = 3})
 
 local CombatText = dankWARE.Utilities.Drawing:AddDrawing('Text', {
     Visible = true,
@@ -126,27 +118,27 @@ Window.Flags['Background/CustomImage'] = ''
 RunService.RenderStepped:Connect(function()
     local MouseLocation = UserInputService:GetMouseLocation()
 
-    Fov.Circle.Visible = Window.Flags['Combat/Fov/Visible']
-    Fov.OutlineCircle.Visible = Window.Flags['Combat/Fov/Visible']
+    FovCircle.Visible = Window.Flags['Combat/Fov/Visible']
+    FovOutlineCircle.Visible = Window.Flags['Combat/Fov/Visible']
 
-    Fov.Circle.Radius = Window.Flags['Combat/Fov/Size']
-    Fov.OutlineCircle.Radius = Window.Flags['Combat/Fov/Visible']
+    FovCircle.Radius = Window.Flags['Combat/Fov/Size']
+    FovOutlineCircle.Radius = Window.Flags['Combat/Fov/Visible']
 
-    Fov.Circle.Color = Window.Flags['Combat/Fov/Color'][6]
+    FovCircle.Color = Window.Flags['Combat/Fov/Color'][6]
 
-    Fov.Circle.Filled = Window.Flags['Combat/Fov/Filled']
+    FovCircle.Filled = Window.Flags['Combat/Fov/Filled']
 
-    Fov.Circle.Transparency = Window.Flags['Combat/Fov/Transparency']
-    Fov.OutlineCircle.Transparency = Window.Flags['Combat/Fov/Transparency']
+    FovCircle.Transparency = Window.Flags['Combat/Fov/Transparency']
+    FovOutlineCircle.Transparency = Window.Flags['Combat/Fov/Transparency']
 
-    Fov.Circle.NumSides = Window.Flags['Combat/Fov/Sides']
-    Fov.OutlineCircle.NumSides = Window.Flags['Combat/Fov/Sides']
+    FovCircle.NumSides = Window.Flags['Combat/Fov/Sides']
+    FovOutlineCircle.NumSides = Window.Flags['Combat/Fov/Sides']
 
-    Fov.Circle.Thickness = Window.Flags['Combat/Fov/Thickness'] + 2
-    Fov.OutlineCircle.NumSides = Window.Flags['Combat/Fov/Sides']
+    FovCircle.Thickness = Window.Flags['Combat/Fov/Thickness'] + 2
+    FovOutlineCircle.NumSides = Window.Flags['Combat/Fov/Sides']
 
-    Fov.Circle.Position = Vector2.new(MouseLocation.X, MouseLocation.Y)
-    Fov.OutlineCircle.Position = Vector2.new(MouseLocation.X, MouseLocation.Y)
+    FovCircle.Position = Vector2.new(MouseLocation.X, MouseLocation.Y)
+    FovOutlineCircle.Position = Vector2.new(MouseLocation.X, MouseLocation.Y)
 
     CombatText.Text = `Enabled: {Window.Flags['Combat/Aimbot/Enabled']}, Target: {TargetPlayer or None}`
 end)
