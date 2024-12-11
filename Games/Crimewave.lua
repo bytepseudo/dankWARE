@@ -1,3 +1,7 @@
+--[[
+    teamcheck dropdown
+]]
+
 loadstring(game:HttpGet('https://raw.githubusercontent.com/Pixeluted/adoniscries/refs/heads/main/Source.lua'))()
 
 local Players = game:GetService('Players')
@@ -19,19 +23,18 @@ local TargetPlayer, TargetLimb = nil, nil
 local HitSound = Instance.new('Sound', Camera)
 HitSound.Volume = 3.3
 
-local FovCircle = dankWARE.Utilities.Drawing:AddDrawing('Circle', {ZIndex = 4})
-local FovOutlineCircle = dankWARE.Utilities.Drawing:AddDrawing('Circle', {Color = Color3.new(0, 0, 0), ZIndex = 3})
+local FovCircle = Drawing.new('Circle')
+local CombatInfo = Drawing.new('Text')
 
-local CombatText = dankWARE.Utilities.Drawing:AddDrawing('Text', {
-    Visible = true,
-    Size = 16,
-    Position = Vector2.new(960, 960),
-    Center = true,
-    Outline = true,
-    Color = Color3.new(1, 1, 1),
-    OutlineColor = Color3.new(0, 0, 0),
-    Text = 'Enabled: false, Target: None'
-})
+-- local FovCircle = dankWARE.Utilities.Drawing:AddDrawing('Circle')
+
+CombatInfo.Visible = true
+CombatInfo.Position = Vector2.new(960, 960)
+CombatInfo.Center = true
+CombatInfo.Outline = true
+CombatInfo.Color = Color3.new(1, 1, 1)
+CombatInfo.OutlineColor = Color3.new(0, 0, 0)
+CombatInfo.Text = 'Enabled: false, Target: None'
 
 local RaycastParams = RaycastParams.new()
 RaycastParams.FilterDescendantsInstances = {LocalPlayer.Character}
@@ -61,7 +64,7 @@ local Window = dankWARE.Utilities.Interface:Window({Name = 'dankWARE', Enabled =
 
             FovSection:Slider({Name = 'Size', Flag = 'Combat/Fov/Size', Min = 5, Max = 600, Value = 60, Precise = 1, Unit = ''})
             FovSection:Slider({Name = 'Sides', Flag = 'Combat/Fov/Sides', Min = 1, Max = 60, Value = 60, Precise = 1, Unit = ''})
-            FovSection:Slider({Name = 'Thickness', Flag = 'Combat/Fov/Thickness', Min = 1, Max = 5, Value = 1.5, Precise = 1, Unit = ''})
+            FovSection:Slider({Name = 'Thickness', Flag = 'Combat/Fov/Thickness', Min = 1, Max = 5,Value = 1, Precise = 1, Unit = ''})
             FovSection:Slider({Name = 'Transparency', Flag = 'Combat/Fov/Transparency', Min = 0, Max = 1, Value = 1, Precise = 1, Unit = ''})
 
             FovSection:Colorpicker({Name = 'Color', Flag = 'Combat/Fov/Color', Value = {0, 0, 1, 0, false}})
@@ -223,28 +226,16 @@ RunService.RenderStepped:Connect(function()
     local MouseLocation = UserInputService:GetMouseLocation()
 
     FovCircle.Visible = Window.Flags['Combat/Fov/Visible']
-    FovOutlineCircle.Visible = Window.Flags['Combat/Fov/Visible']
-
     FovCircle.Radius = Window.Flags['Combat/Fov/Size']
-    FovOutlineCircle.Radius = Window.Flags['Combat/Fov/Size']
-
     FovCircle.Color = Window.Flags['Combat/Fov/Color'][6]
-
     FovCircle.Filled = Window.Flags['Combat/Fov/Filled']
-
     FovCircle.Transparency = Window.Flags['Combat/Fov/Transparency']
-    FovOutlineCircle.Transparency = Window.Flags['Combat/Fov/Transparency']
-
     FovCircle.NumSides = Window.Flags['Combat/Fov/Sides']
-    FovOutlineCircle.NumSides = Window.Flags['Combat/Fov/Sides']
-
     FovCircle.Thickness = Window.Flags['Combat/Fov/Thickness']
-    FovOutlineCircle.Thickness = Window.Flags['Combat/Fov/Thickness'] + 2
 
     FovCircle.Position = Vector2.new(MouseLocation.X, MouseLocation.Y)
-    FovOutlineCircle.Position = Vector2.new(MouseLocation.X, MouseLocation.Y)
 
-    CombatText.Text = `Enabled: {Window.Flags['Combat/Aimbot/Enabled']}, Target: {TargetPlayer or None}`
+    CombatInfo.Text = `Enabled: {Window.Flags['Combat/Aimbot/Enabled']}, Target: {TargetPlayer or None}`
 end)
 
 RunService.RenderStepped:Connect(function()
@@ -265,7 +256,7 @@ RunService.RenderStepped:Connect(function()
         end
 
         if Window.Flags['Combat/Aimbot/Enabled'] then
-            local Aimpart = Player and Player.Character:FindFirstChild(Window.Flags['Combat/Filter/Aimpart'][1])
+            local Aimpart = TargetPlayer and TargetLimb
 
             if Aimpart then
                 if table.find(Window.Flags['Combat/Aimbot/Method'], 'Angles') then
@@ -287,40 +278,40 @@ LocalPlayer.CharacterAdded:Connect(function()
     end
 end)
 
--- local OldNameCall; OldNameCall = hookmetamethod(game, '__namecall', function(Self, ...)
---     if checkcaller() then return OldNameCall(Self, ...) end
+local OldNameCall; OldNameCall = hookmetamethod(game, '__namecall', function(Self, ...)
+    if checkcaller() then return OldNameCall(Self, ...) end
 
---     local Method, Args = getnamecallmethod(), {...}
+    local Method, Args = getnamecallmethod(), {...}
 
---     if Self.Name == 'NetworkEvent' then
---         if Args[4] and Args[4][1] then
---             task.spawn(function()
---                 setthreadidentity(5)
+    if Self.Name == 'NetworkEvent' then
+        if Args[4] and Args[4][1] then
+            task.spawn(function()
+                setthreadidentity(5)
 
---                 local Part = Args[4][1]
---                 local Player = Players:GetPlayerFromCharacter(Part.Parent:IsA('Accessory') and Part.Parent.Parent or Part.Parent)
+                local Part = Args[4][1]
+                local Player = Players:GetPlayerFromCharacter(Part.Parent:IsA('Accessory') and Part.Parent.Parent or Part.Parent)
     
---                 if Player then
---                     local Start, End = tick()
+                if Player then
+                    local Start, End = tick()
     
---                     local Humanoid = Player.Character.Humanoid
---                     local OldHealth = Humanoid.Health
+                    local Humanoid = Player.Character.Humanoid
+                    local OldHealth = Humanoid.Health
     
---                     Humanoid.HealthChanged:Wait()
+                    Humanoid.HealthChanged:Wait()
     
---                     End = tick() - Start
+                    End = tick() - Start
     
---                     if End < 0.2 then
---                         local Damage = math.floor((OldHealth - Humanoid.Health) * 10) / 10
---                         dankWARE.Utilities.Interface:Notify(`dankWARE | Hit {Player.Name} in the {Args[2].Name} for {Damage}`, 1.5)
---                     end
---                 end
---             end)
---         end
---     end
+                    if End < 0.2 then
+                        local Damage = math.floor((OldHealth - Humanoid.Health) * 10) / 10
+                        dankWARE.Utilities.Interface:Notify(`dankWARE | Hit {Player.Name} in the {Args[2].Name} for {Damage}`, 1.5)
+                    end
+                end
+            end)
+        end
+    end
 
---     return OldNameCall(Self, ...)
--- end)
+    return OldNameCall(Self, ...)
+end)
 
 local OldIndex; OldIndex = hookmetamethod(game, '__index', function(Self, Index)
     if checkcaller() then return OldIndex(Self, Index) end
@@ -344,4 +335,4 @@ local OldIndex; OldIndex = hookmetamethod(game, '__index', function(Self, Index)
 end)
 
 local EndTime = math.floor((tick() - dankWARE.StartTime) * 10) / 10
-dankWARE.Utilities.Interface:Toast({Title = `Loaded in {EndTime} seconds`, Duration = 1.5, Color = Color3.new(0.0902, 0.65098, 0.92941, 0)})
+dankWARE.Utilities.Interface:Toast({Title = `Took {EndTime} seconds`, Duration = 1.5, Color = Color3.new(0.0902, 0.65098, 0.92941, 0)})
