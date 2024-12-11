@@ -1,3 +1,5 @@
+loadstring(game:HttpGet('https://raw.githubusercontent.com/Pixeluted/adoniscries/refs/heads/main/Source.lua'))()
+
 local Players = game:GetService('Players')
 local ReplicatedStorage = game:GetService('ReplicatedStorage')
 local UserInputService = game:GetService('UserInputService')
@@ -17,8 +19,7 @@ local TargetPlayer, TargetLimb = nil, nil
 local HitSound = Instance.new('Sound', Camera)
 HitSound.Volume = 3.3
 
---local FovCircle = dankWARE.Utilities.Drawing:AddDrawing('Circle', {ZIndex = 4})
---local FovOutlineCircle = dankWARE.Utilities.Drawing:AddDrawing('Circle', {ZIndex = 3})
+local FovCircle = Drawing.new('Circle')
 
 local CombatText = dankWARE.Utilities.Drawing:AddDrawing('Text', {
     Visible = true,
@@ -115,33 +116,21 @@ end
 Window.Background.Image = ''
 Window.Flags['Background/CustomImage'] = ''
 
--- RunService.RenderStepped:Connect(function()
---     local MouseLocation = UserInputService:GetMouseLocation()
+RunService.RenderStepped:Connect(function()
+    local MouseLocation = UserInputService:GetMouseLocation()
 
---     FovCircle.Visible = Window.Flags['Combat/Fov/Visible']
---     FovOutlineCircle.Visible = Window.Flags['Combat/Fov/Visible']
+    FovCircle.Visible = Window.Flags['Combat/Fov/Visible']
+    FovCircle.Radius = Window.Flags['Combat/Fov/Size']
+    FovCircle.Color = Window.Flags['Combat/Fov/Color'][6]
+    FovCircle.Filled = Window.Flags['Combat/Fov/Filled']
+    FovCircle.Transparency = Window.Flags['Combat/Fov/Transparency']
+    FovCircle.NumSides = Window.Flags['Combat/Fov/Sides']
+    FovCircle.Thickness = Window.Flags['Combat/Fov/Thickness']
 
---     FovCircle.Radius = Window.Flags['Combat/Fov/Size']
---     FovOutlineCircle.Radius = Window.Flags['Combat/Fov/Visible']
+    FovCircle.Position = Vector2.new(MouseLocation.X, MouseLocation.Y)
 
---     FovCircle.Color = Window.Flags['Combat/Fov/Color'][6]
-
---     FovCircle.Filled = Window.Flags['Combat/Fov/Filled']
-
---     FovCircle.Transparency = Window.Flags['Combat/Fov/Transparency']
---     FovOutlineCircle.Transparency = Window.Flags['Combat/Fov/Transparency']
-
---     FovCircle.NumSides = Window.Flags['Combat/Fov/Sides']
---     FovOutlineCircle.NumSides = Window.Flags['Combat/Fov/Sides']
-
---     FovCircle.Thickness = Window.Flags['Combat/Fov/Thickness'] + 2
---     FovOutlineCircle.NumSides = Window.Flags['Combat/Fov/Sides']
-
---     FovCircle.Position = Vector2.new(MouseLocation.X, MouseLocation.Y)
---     FovOutlineCircle.Position = Vector2.new(MouseLocation.X, MouseLocation.Y)
-
---     CombatText.Text = `Enabled: {Window.Flags['Combat/Aimbot/Enabled']}, Target: {TargetPlayer or None}`
--- end)
+    CombatText.Text = `Enabled: {Window.Flags['Combat/Aimbot/Enabled']}, Target: {TargetPlayer or None}`
+end)
 
 local EndTime = math.floor((tick() - dankWARE.StartTime) * 10) / 10
-dankWARE.Utilities.Interface:Toast({Title = `Loaded in {EndTime} seconds`, Duration = 1.5, Color = Color3.new(0.0902, 0.65098, 0.92941, 0)})
+dankWARE.Utilities.Interface:Toast({Title = `Took {EndTime} seconds`, Duration = 1.5, Color = Color3.new(0.0902, 0.65098, 0.92941, 0)})
