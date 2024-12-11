@@ -4,7 +4,7 @@ local TextService = game:GetService("TextService")
 local GuiService = game:GetService("GuiService")
 local RunService = game:GetService("RunService")
 local PlayerService = game:GetService("Players")
-local TeamsService = game:GetService("Teams")
+local TeamService = game:GetService("Teams")
 local CoreGui = game:GetService("CoreGui")
 
 local GuiInset = GuiService:GetGuiInset()
@@ -3813,48 +3813,47 @@ Bracket.Elements = {
 		function Dropdown.RefreshToTeams(Self, ToggleMode)
 			local DropdownTeams = {}
 		
-			for _, Team in pairs(TeamsService:GetChildren()) do
-				DropdownTeams[Team.Name] = {
+			for _, Team in pairs(TeamService:GetChildren()) do
+				DropdownPlayers[Team.Name] = {
 					Name = Team.Name,
 					Mode = "Toggle",
 					Value = false
-				}
+					}
 			end
 		
 			local function RefreshDropdown()
-				local TeamsArray = {}
+			local TeamsArray = {}
 		
-				for _, Team in pairs(DropdownTeams) do
-					table.insert(TeamsArray, Team)
-				end
-		
-				table.sort(TeamsArray, function(a, b)
-					if a.Value == b.Value then
-						return a.Name < b.Name
-					end
-		
-					return a.Value
-				end)
-		
-				Self:Clear()
-				Self:BulkAdd(TeamsArray)	
+			for _, TeamData in pairs(DropdownTeams) do
+				table.insert(TeamData, TeamData)
 			end
 		
-			TeamsService.ChildAdded:Connect(function(Child)
-				if not DropdownTeams[Child.Name] then
+			table.sort(TeamData, function(a, b)
+				if a.Value == b.Value then
+				return a.Name < b.Name
+				end
+				return a.Value
+			end)
+		
+			Self:Clear()
+			Self:BulkAdd(TeamsArray)
+			end
+		
+		
+			TeamService.ChildAdded:Connect(function(Child)
+				if DropdownPlayers[Child.Name] then
 					DropdownPlayers[Child.Name] = {
 						Name = Child.Name,
-						Mode = "Toggle",
+						Mode = ToggleMode == "Toggle" and "Toggle" or "Button",
 						Value = false
 					}
-		
 					RefreshDropdown()
 				end
 			end)
 		
-			TeamsService.ChildRemoved:Connect(function(Child)
-				if DropdownTeams[Child.Name] then
-					DropdownTeams[Child.Name] = nil
+			TeamService.ChildRemoved:Connect(function(Child)
+				if DropdownPlayers[Child.Name] then
+					DropdownPlayers[Child.Name] = nil
 					RefreshDropdown()
 				end
 			end)
