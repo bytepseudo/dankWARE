@@ -19,10 +19,18 @@ local TargetPlayer, TargetLimb = nil, nil
 local HitSound = Instance.new('Sound', Camera)
 HitSound.Volume = 3.3
 
-local FovCircle = Drawing.new('Circle')
+local Fov = {
+    Circle = dankWARE.Utilities.Drawing:AddDrawing('Circle', {
+        ZIndex = 4
+    }),
+    OutlineCircle = dankWARE.Utilities.Drawing:AddDrawing('Circle', {
+        ZIndex = 3
+    })
+}
 
 local CombatText = dankWARE.Utilities.Drawing:AddDrawing('Text', {
     Visible = true,
+    Size = 20
     Position = Vector2.new(960, 960),
     Center = true,
     Outline = true,
@@ -118,13 +126,24 @@ Window.Flags['Background/CustomImage'] = ''
 RunService.RenderStepped:Connect(function()
     local MouseLocation = UserInputService:GetMouseLocation()
 
-    FovCircle.Visible = Window.Flags['Combat/Fov/Visible']
-    FovCircle.Radius = Window.Flags['Combat/Fov/Size']
-    FovCircle.Color = Window.Flags['Combat/Fov/Color'][6]
-    FovCircle.Filled = Window.Flags['Combat/Fov/Filled']
-    FovCircle.Transparency = Window.Flags['Combat/Fov/Transparency']
-    FovCircle.NumSides = Window.Flags['Combat/Fov/Sides']
-    FovCircle.Thickness = Window.Flags['Combat/Fov/Thickness']
+    Fov.Circle.Visible = Window.Flags['Combat/Fov/Visible']
+    Fov.OutlineCircle.Visible = Window.Flags['Combat/Fov/Visible']
+
+    Fov.Circle.Radius = Window.Flags['Combat/Fov/Size']
+    Fov.OutlineCircle.Radius = Window.Flags['Combat/Fov/Visible']
+
+    Fov.Circle.Color = Window.Flags['Combat/Fov/Color'][6]
+
+    Fov.Circle.Filled = Window.Flags['Combat/Fov/Filled']
+
+    Fov.Circle.Transparency = Window.Flags['Combat/Fov/Transparency']
+    Fov.OutlineCircle.Transparency = Window.Flags['Combat/Fov/Transparency']
+
+    Fov.Circle.NumSides = Window.Flags['Combat/Fov/Sides']
+    Fov.OutlineCircle.NumSides = Window.Flags['Combat/Fov/Sides']
+
+    Fov.Circle.Thickness = Window.Flags['Combat/Fov/Thickness'] + 2
+    Fov.OutlineCircle.NumSides = Window.Flags['Combat/Fov/Sides']
 
     FovCircle.Position = Vector2.new(MouseLocation.X, MouseLocation.Y)
 
@@ -132,4 +151,4 @@ RunService.RenderStepped:Connect(function()
 end)
 
 local EndTime = math.floor((tick() - dankWARE.StartTime) * 10) / 10
-dankWARE.Utilities.Interface:Toast({Title = `Took {EndTime} seconds`, Duration = 1.5, Color = Color3.new(0.0902, 0.65098, 0.92941, 0)})
+dankWARE.Utilities.Interface:Toast({Title = `Loaded in {EndTime} seconds`, Duration = 1.5, Color = Color3.new(0.0902, 0.65098, 0.92941, 0)})
