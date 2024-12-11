@@ -1,7 +1,5 @@
 loadstring(game:HttpGet('https://raw.githubusercontent.com/Pixeluted/adoniscries/refs/heads/main/Source.lua'))()
 
-print('gg')
-
 local Players = game:GetService('Players')
 local ReplicatedStorage = game:GetService('ReplicatedStorage')
 local UserInputService = game:GetService('UserInputService')
@@ -36,7 +34,7 @@ local CombatText = dankWARE.Utilities.Drawing:AddDrawing('Text', {
 })
 
 local RaycastParams = RaycastParams.new()
-RaycastParams.FilterDescendantsInstances = {LocalPlayer.Character}
+RaycastParams.FilterDescendantsInstances = {LocalPlayer.Character, Workspace.Folder.SafeZones}
 RaycastParams.FilterType = Enum.RaycastFilterType.Blacklist
 
 local Window = dankWARE.Utilities.Interface:Window({Name = 'dankWARE', Enabled = true, Color = Color3.new(0.0902, 0.65098, 0.92941, 0), Size = UDim2.new(0,496,0,496), Position = UDim2.new(0.5,-248,0.5,-248)}) do
@@ -88,6 +86,54 @@ local Window = dankWARE.Utilities.Interface:Window({Name = 'dankWARE', Enabled =
 
             FilterSection:Dropdown({Name = 'Aimpart', Flag = 'Combat/Filter/Aimpart', List = DropdownLimbs})
             FilterSection:Dropdown({Name = 'Friends', Flag = 'Combat/Filter/Friends', List = DropdownPlayers}):RefreshToPlayers(true)
+
+            local TeamsDropdown = FilterSection:Dropdown({Name = 'Teams', Flag = 'Combat/Filter/Teams', List = {'Enomoto-ikka', 'Chosen Devils'}})
+
+            local TeamsDropdownList = {}
+
+            for _, Team in pairs(Teams:GetChildren()) do
+                table.insert(TeamsDropdownList, Team.Name)
+            end
+
+            local function RefreshDropdown()
+                local TeamsArray = {}
+
+                for _, Team in pairs(TeamsDropdownList) do
+                    table.insert(TestTeams, Team.Name)
+                end
+
+                table.sort(TeamsArray, function(a, b)
+                    if a.Value == b.Value then
+                        return a.Name < b.Name
+                    end
+
+                    return a.Value
+                end)
+
+                TeamsDropdown:Clear()
+                TeamsDropdown:BulkAdd(TeamsArray)
+            end
+
+            Teams.ChildAdded:Connect(function(Child)
+                if not TeamsDropdownList[Child.Name] then
+                    TeamsDropdownList[Child.Name] = {
+                        Name = Child.Name,
+                        Mode = 'Toggle',
+                        Value = false
+                    }
+
+                    RefreshDropdown()
+                end
+            end)
+
+            Teams.ChildRemoved:Connect(function(Child)
+                if TeamsDropdownList[Child.Name] then
+                    TeamsDropdownList[Child.Name] = nil
+                    RefreshDropdown()
+                end
+            end)
+
+            RefreshDropdown()
         end
     end
 
