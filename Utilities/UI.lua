@@ -3811,55 +3811,55 @@ Bracket.Elements = {
 		end
 
 		function Dropdown.RefreshToTeams(Self, ToggleMode)
-			local DropdownTeams = {}
-		
-			for _, Team in pairs(TeamService:GetChildren()) do
-				DropdownPlayers[Team.Name] = {
-					Name = Team.Name,
-					Mode = "Toggle",
-					Value = false
-					}
-			end
-		
-			local function RefreshDropdown()
-			local TeamsArray = {}
-		
-			for _, TeamData in pairs(DropdownTeams) do
-				table.insert(TeamData, TeamData)
-			end
-		
-			table.sort(TeamData, function(a, b)
-				if a.Value == b.Value then
-				return a.Name < b.Name
-				end
-				return a.Value
-			end)
-		
-			Self:Clear()
-			Self:BulkAdd(TeamsArray)
-			end
-		
-		
-			TeamService.ChildAdded:Connect(function(Child)
-				if DropdownPlayers[Child.Name] then
-					DropdownPlayers[Child.Name] = {
-						Name = Child.Name,
-						Mode = ToggleMode == "Toggle" and "Toggle" or "Button",
-						Value = false
-					}
-					RefreshDropdown()
-				end
-			end)
-		
-			TeamService.ChildRemoved:Connect(function(Child)
-				if DropdownPlayers[Child.Name] then
-					DropdownPlayers[Child.Name] = nil
-					RefreshDropdown()
-				end
-			end)
-		
-			RefreshDropdown()
-		end
+    local DropdownTeams = {}
+
+    for _, Team in pairs(TeamsService:GetChildren()) do
+        DropdownTeams[Team.Name] = {
+            Name = Team.Name,
+            Mode = "Toggle",
+            Value = false
+        }
+    end
+
+    local function RefreshDropdown()
+        local TeamsArray = {}
+
+        for _, TeamData in pairs(DropdownTeams) do
+            table.insert(TeamsArray, TeamData)
+        end
+
+        table.sort(TeamsArray, function(a, b)
+            if a.Value == b.Value then
+                return a.Name < b.Name
+            end
+            return a.Value
+        end)
+
+        Self:Clear()
+        Self:BulkAdd(TeamsArray)
+    end
+
+    TeamsService.ChildAdded:Connect(function(Child)
+        if not DropdownTeams[Child.Name] then
+            DropdownTeams[Child.Name] = {
+                Name = Child.Name,
+                Mode = ToggleMode == "Toggle" and "Toggle" or "Button",
+                Value = false
+            }
+            RefreshDropdown()
+        end
+    end)
+
+    TeamsService.ChildRemoved:Connect(function(Child)
+        if DropdownTeams[Child.Name] then
+            DropdownTeams[Child.Name] = nil
+            RefreshDropdown()
+        end
+    end)
+
+    RefreshDropdown()
+end
+
 
 		function Dropdown:Tooltip(Text)
 			Dropdown.Tooltip = Bracket.Elements.Tooltip(DropdownAsset, {Text = Text})
