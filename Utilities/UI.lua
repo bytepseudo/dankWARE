@@ -3813,7 +3813,7 @@ Bracket.Elements = {
 		function Dropdown.RefreshToTeams(Self, ToggleMode)
     local DropdownTeams = {}
 
-    for _, Team in pairs(TeamsService:GetChildren()) do
+    for _, Team in pairs(TeamService:GetChildren()) do
         DropdownTeams[Team.Name] = {
             Name = Team.Name,
             Mode = "Toggle",
@@ -3839,7 +3839,7 @@ Bracket.Elements = {
         Self:BulkAdd(TeamsArray)
     end
 
-    TeamsService.ChildAdded:Connect(function(Child)
+    TeamService.ChildAdded:Connect(function(Child)
         if not DropdownTeams[Child.Name] then
             DropdownTeams[Child.Name] = {
                 Name = Child.Name,
@@ -3850,7 +3850,7 @@ Bracket.Elements = {
         end
     end)
 
-    TeamsService.ChildRemoved:Connect(function(Child)
+    TeamService.ChildRemoved:Connect(function(Child)
         if DropdownTeams[Child.Name] then
             DropdownTeams[Child.Name] = nil
             RefreshDropdown()
