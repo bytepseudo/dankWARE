@@ -1,6 +1,6 @@
 loadstring(game:HttpGet('https://raw.githubusercontent.com/Pixeluted/adoniscries/refs/heads/main/Source.lua'))()
 
-print('gg')
+print('gg2')
 
 local Players = game:GetService('Players')
 local ReplicatedStorage = game:GetService('ReplicatedStorage')
@@ -126,7 +126,7 @@ RunService.RenderStepped:Connect(function()
     FovOutlineCircle.Visible = Window.Flags['Combat/Fov/Visible']
 
     FovCircle.Radius = Window.Flags['Combat/Fov/Size']
-    FovOutlineCircle.Radius = Window.Flags['Combat/Fov/Visible']
+    FovOutlineCircle.Radius = Window.Flags['Combat/Fov/Size']
 
     FovCircle.Color = Window.Flags['Combat/Fov/Color'][6]
 
