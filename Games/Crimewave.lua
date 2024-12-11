@@ -33,6 +33,10 @@ local CombatText = dankWARE.Utilities.Drawing:AddDrawing('Text', {
     Text = 'Enabled: false, Target: None'
 })
 
+local RaycastParams = RaycastParams.new()
+RaycastParams.FilterDescendantsInstances = {LocalPlayer.Character}
+RaycastParams.FilterType = Enum.RaycastFilterType.Blacklist
+
 local Window = dankWARE.Utilities.Interface:Window({Name = 'dankWARE', Enabled = true, Color = Color3.new(0.0902, 0.65098, 0.92941, 0), Size = UDim2.new(0,496,0,496), Position = UDim2.new(0.5,-248,0.5,-248)}) do
     local CombatTab = Window:Tab({Name = 'Combat'}) do
         local AimbotSection = CombatTab:Section({Name = 'Aimbot',Side = 'Left'}) do
@@ -57,7 +61,7 @@ local Window = dankWARE.Utilities.Interface:Window({Name = 'dankWARE', Enabled =
 
             FovSection:Slider({Name = 'Size', Flag = 'Combat/Fov/Size', Min = 5, Max = 600, Value = 60, Precise = 1, Unit = ''})
             FovSection:Slider({Name = 'Sides', Flag = 'Combat/Fov/Sides', Min = 1, Max = 60, Value = 60, Precise = 1, Unit = ''})
-            FovSection:Slider({Name = 'Thickness', Flag = 'Combat/Fov/Thickness', Min = 1, Max = 5,Value = 1, Precise = 1, Unit = ''})
+            FovSection:Slider({Name = 'Thickness', Flag = 'Combat/Fov/Thickness', Min = 1, Max = 5, Value = 1.5, Precise = 1, Unit = ''})
             FovSection:Slider({Name = 'Transparency', Flag = 'Combat/Fov/Transparency', Min = 0, Max = 1, Value = 1, Precise = 1, Unit = ''})
 
             FovSection:Colorpicker({Name = 'Color', Flag = 'Combat/Fov/Color', Value = {0, 0, 1, 0, false}})
@@ -283,40 +287,40 @@ LocalPlayer.CharacterAdded:Connect(function()
     end
 end)
 
-local OldNameCall; OldNameCall = hookmetamethod(game, '__namecall', function(Self, ...)
-    if checkcaller() then return OldNameCall(Self, ...) end
+-- local OldNameCall; OldNameCall = hookmetamethod(game, '__namecall', function(Self, ...)
+--     if checkcaller() then return OldNameCall(Self, ...) end
 
-    local Method, Args = getnamecallmethod(), {...}
+--     local Method, Args = getnamecallmethod(), {...}
 
-    if Self.Name == 'NetworkEvent' then
-        if Args[4] and Args[4][1] then
-            task.spawn(function()
-                setthreadidentity(5)
+--     if Self.Name == 'NetworkEvent' then
+--         if Args[4] and Args[4][1] then
+--             task.spawn(function()
+--                 setthreadidentity(5)
 
-                local Part = Args[4][1]
-                local Player = Players:GetPlayerFromCharacter(Part.Parent:IsA('Accessory') and Part.Parent.Parent or Part.Parent)
+--                 local Part = Args[4][1]
+--                 local Player = Players:GetPlayerFromCharacter(Part.Parent:IsA('Accessory') and Part.Parent.Parent or Part.Parent)
     
-                if Player then
-                    local Start, End = tick()
+--                 if Player then
+--                     local Start, End = tick()
     
-                    local Humanoid = Player.Character.Humanoid
-                    local OldHealth = Humanoid.Health
+--                     local Humanoid = Player.Character.Humanoid
+--                     local OldHealth = Humanoid.Health
     
-                    Humanoid.HealthChanged:Wait()
+--                     Humanoid.HealthChanged:Wait()
     
-                    End = tick() - Start
+--                     End = tick() - Start
     
-                    if End < 0.2 then
-                        local Damage = math.floor((OldHealth - Humanoid.Health) * 10) / 10
-                        dankWARE.Utilities.Interface:Notify(`dankWARE | Hit {Player.Name} in the {Args[2].Name} for {Damage}`, 1.5)
-                    end
-                end
-            end)
-        end
-    end
+--                     if End < 0.2 then
+--                         local Damage = math.floor((OldHealth - Humanoid.Health) * 10) / 10
+--                         dankWARE.Utilities.Interface:Notify(`dankWARE | Hit {Player.Name} in the {Args[2].Name} for {Damage}`, 1.5)
+--                     end
+--                 end
+--             end)
+--         end
+--     end
 
-    return OldNameCall(Self, ...)
-end)
+--     return OldNameCall(Self, ...)
+-- end)
 
 local OldIndex; OldIndex = hookmetamethod(game, '__index', function(Self, Index)
     if checkcaller() then return OldIndex(Self, Index) end
