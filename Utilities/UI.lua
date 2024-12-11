@@ -4,6 +4,7 @@ local TextService = game:GetService("TextService")
 local GuiService = game:GetService("GuiService")
 local RunService = game:GetService("RunService")
 local PlayerService = game:GetService("Players")
+local TeamsService = game:GetService("Teams")
 local CoreGui = game:GetService("CoreGui")
 
 local GuiInset = GuiService:GetGuiInset()
