@@ -56,6 +56,13 @@ local Window = dankWARE.Utilities.Interface:Window({Name = 'dankWARE', Enabled =
             AimbotSection:Slider({Name = 'Sensitivity', Flag = 'Combat/Aimbot/Sensitivity', Min = 0, Max = 100, Precise = 1, Unit = '', Value = 20})
         end
 
+        local ModificationSection = CombatTab:Section({Name = 'Modification', Side = 'Left'}) do
+            FilterSection:Toggle({Name = 'Unlock Firemodes', Flag = 'Combat/Modification/UnlockFiremodes', Value = false})
+            FilterSection:Toggle({Name = 'No Spread', Flag = 'Combat/Modification/NoSpread', Value = false})
+            FilterSection:Toggle({Name = 'Rate of Fire', Flag = 'Combat/Modification/RPMEnabled', Value = false})
+            FilterSection:Slider({Name = 'Rate', Flag = 'Combat/Modification/RPM', Min = 0, Max = 5000, Value = 1000, Precise = 1, Unit = ''})
+        end
+
         local FovSection = CombatTab:Section({Name = 'Fov', Side = 'Right'}) do
             FovSection:Toggle({Name = 'Visible', Flag = 'Combat/Fov/Visible', Value = false})
             FovSection:Toggle({Name = 'Filled', Flag = 'Combat/Fov/Filled', Value = false})
