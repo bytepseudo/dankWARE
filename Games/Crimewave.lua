@@ -1,5 +1,7 @@
 loadstring(game:HttpGet('https://raw.githubusercontent.com/Pixeluted/adoniscries/refs/heads/main/Source.lua'))()
 
+print('wow')
+
 local Players = game:GetService('Players')
 local Teams = game:GetService('Teams')
 local ReplicatedStorage = game:GetService('ReplicatedStorage')
