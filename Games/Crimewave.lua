@@ -1,7 +1,5 @@
 loadstring(game:HttpGet('https://raw.githubusercontent.com/Pixeluted/adoniscries/refs/heads/main/Source.lua'))()
 
-print('wow')
-
 local Players = game:GetService('Players')
 local Teams = game:GetService('Teams')
 local ReplicatedStorage = game:GetService('ReplicatedStorage')
@@ -56,18 +54,6 @@ local Window = dankWARE.Utilities.Interface:Window({Name = 'dankWARE', Enabled =
 
             AimbotSection:Slider({Name = 'Chance', Flag = 'Combat/Aimbot/Chance', Min = 0.1, Max = 100, Precise = 1, Unit = '', Value = 100})
             AimbotSection:Slider({Name = 'Sensitivity', Flag = 'Combat/Aimbot/Sensitivity', Min = 0, Max = 100, Precise = 1, Unit = '', Value = 20})
-        end
-
-        local FovSection = CombatTab:Section({Name = 'Fov', Side = 'Right'}) do
-            FovSection:Toggle({Name = 'Visible', Flag = 'Combat/Fov/Visible', Value = false})
-            FovSection:Toggle({Name = 'Filled', Flag = 'Combat/Fov/Filled', Value = false})
-
-            FovSection:Slider({Name = 'Size', Flag = 'Combat/Fov/Size', Min = 5, Max = 600, Value = 60, Precise = 1, Unit = ''})
-            FovSection:Slider({Name = 'Sides', Flag = 'Combat/Fov/Sides', Min = 1, Max = 60, Value = 60, Precise = 1, Unit = ''})
-            FovSection:Slider({Name = 'Thickness', Flag = 'Combat/Fov/Thickness', Min = 1, Max = 5, Value = 1.5, Precise = 1, Unit = ''})
-            FovSection:Slider({Name = 'Transparency', Flag = 'Combat/Fov/Transparency', Min = 0, Max = 1, Value = 1, Precise = 1, Unit = ''})
-
-            FovSection:Colorpicker({Name = 'Color', Flag = 'Combat/Fov/Color', Value = {0, 0, 1, 0, false}})
         end
 
         local ModificationSection = CombatTab:Section({Name = 'Modification', Side = 'Left'}) do
