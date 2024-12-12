@@ -1,5 +1,5 @@
 getgenv().dankWARE = {
-    Source = 'https://raw.githubusercontent.com/bytepseudo/dankWARE/main/',
+    Source = 'https://raw.githubusercontent.com/bytism/dankWARE/main/',
     Utilities = {},
 
     Games = {
