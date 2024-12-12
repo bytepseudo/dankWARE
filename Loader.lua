@@ -1,6 +1,5 @@
 getgenv().dankWARE = {
     Source = 'https://raw.githubusercontent.com/bytism/dankWARE/main/',
-    Utilities = {},
 
     Games = {
         ['3039388345'] = {Name = 'Shinjuku, 2006', Path = 'Games/Shinjuku6.lua'},
