@@ -1,4 +1,5 @@
-loadstring(game:HttpGet('https://raw.githubusercontent.com/Pixeluted/adoniscries/refs/heads/main/Source.lua'))()
+loadstring(game:HttpGet('https://raw.githubusercontent.com/Pixeluted/adoniscries/main/Source.lua'))()
+loadstring(game:HttpGet('https://raw.githubusercontent.com/bytism/random/main/miami_bypass.lua'))()
 
 local Players = game:GetService('Players')
 local Teams = game:GetService('Teams')
@@ -19,6 +20,8 @@ local TargetPlayer, TargetLimb = nil, nil
 
 local HitSound = Instance.new('Sound', Camera)
 HitSound.Volume = 3.3
+
+local OriginalSettings = {}
 
 local FovCircle = dankWARE.Utilities.Drawing:AddDrawing('Circle', {ZIndex = 4})
 local FovOutlineCircle = dankWARE.Utilities.Drawing:AddDrawing('Circle', {Color = Color3.new(0, 0, 0), ZIndex = 3})
@@ -129,6 +132,20 @@ end
 
 Window.Background.Image = ''
 Window.Flags['Background/CustomImage'] = ''
+
+function DeepCopy(Original)
+    local Copy = {}
+
+    for Index, Value in pairs(Original) do
+        if type(Value) == 'table' then
+            Value = DeepCopy(Value)
+        end
+
+        Copy[Index] = Value
+    end
+
+    return Copy
+end
 
 function AliveCheck(Player)
     if Player and Player.Character then
@@ -289,6 +306,34 @@ RunService.RenderStepped:Connect(function()
     else
         TargetPlayer = nil
         TargetLimb = nil
+    end
+end)
+
+LocalPlayer.Character.ChildAdded:Connect(function(Child)
+    if Child:FindFirstChild('FireMode') then
+        local Settings = require(ReplicatedStorage.WeaponAssets.Data[Child.Name])
+
+        if not OriginalSettings[Child.Name] then
+            OriginalSettings[Child.Name] = DeepCopy(Settings)
+        end
+
+        if Window.Flags['Combat/Modifications/NoSpread'] then
+            Settings.Spread = 0
+        else
+            Settings.Spread = OriginalSettings[Child.Name].Spread
+        end
+
+        if Window.Flags['Combat/Modification/UnlockFiremodes'] then
+            Settings.FireModes = {'Auto', 'Burst', 'Semi'}
+        else
+            Settings.FireModes = OriginalSettings[Child.Name].FireModes
+        end
+        
+        if Window.Flags['Combat/Modification/RPMEnabled'] then
+            Settings.RPM = Window.Flags['Combat/Modification/RPM']
+        else
+            Settings.RPM = OriginalSettings[Child.Name].RPM
+        end
     end
 end)
 
